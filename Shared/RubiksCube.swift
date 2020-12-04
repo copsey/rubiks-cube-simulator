@@ -14,12 +14,53 @@ class RubiksCube {
     typealias Value = Int
     
     /// Type for a face of the cube.
-    typealias Face = Int
+    enum Face: Int, CaseIterable {
+        case first  = 0
+        case second = 1
+        case third  = 2
+        case fourth = 3
+        case fifth  = 4
+        case sixth  = 5
+        
+        /// The face opposite to `self` on the cube.
+        var opposite: Face {
+            Face(rawValue: (self.rawValue + 3) % 6)!
+        }
+        
+        /// Returns `true` if `self` is opposite to `other` on the cube.
+        /// Otherwise returns `false`.
+        func isOpposite(to other: Face) -> Bool {
+            (self.rawValue + 3) % 6 == other.rawValue
+        }
+        
+        /// TODO: Write some helpful documentation.
+        static func + (face: Face, integer: Int) -> Face {
+            let oldValue = face.rawValue
+            let newValue = (oldValue + integer >= 0) ? (oldValue + integer) % 6 : (oldValue + integer) % 6 + 6
+            return Face(rawValue: newValue)!
+        }
+        
+        /// TODO: Write some helpful documentation.
+        static func - (face: Face, integer: Int) -> Face {
+            let oldValue = face.rawValue
+            let newValue = (oldValue - integer >= 0) ? (oldValue - integer) % 6 : (oldValue - integer) % 6 + 6
+            return Face(rawValue: newValue)!
+        }
+        
+        static var random: Face {
+            let value = Int.random(in: 0..<6)
+            return Face(rawValue: value)!
+        }
+    }
     
     /// Type for a layer of the cube.
     struct Layer {
         let face: Face
         let depth: Int
+        
+        var oppositeFace: Face {
+            face.opposite
+        }
     }
     
     /// Type for a position on the cube.
@@ -63,23 +104,18 @@ class RubiksCube {
     
     /// Check if the given layer is valid.
     func layerIsInRange(_ layer: Layer) -> Bool {
-        if layer.face < 0 || layer.face >= 6 { return false }
-        if layer.depth < 0 || layer.depth >= size { return false }
-        return true
+        layer.depth >= 0 && layer.depth < size
     }
     
     /// Check if the given position is valid.
     func positionIsInRange(_ p: Position) -> Bool {
-        if p.face < 0 || p.face >= 6 { return false }
-        if p.x < 0 || p.x >= size { return false }
-        if p.y < 0 || p.y >= size { return false }
-        return true
+        p.x >= 0 && p.x < size && p.y >= 0 && p.y < size
     }
     
     /// Convert a position on the cube to an index in the internal array of values.
     /// Before calling this method, you should make sure the position is in range.
     private func indexFromPosition(_ p: Position) -> Int {
-        p.x + p.y * size + p.face * size * size
+        p.x + p.y * size + p.face.rawValue * size * size
     }
     
     /// Access the value at the given position.
@@ -101,8 +137,8 @@ class RubiksCube {
     
     /// Set each value on a specified face of the cube to the given constant.
     func fill(_ value: Value, onFace face: Face) {
-        let start = face * size * size
-        let end = (face + 1) * size * size
+        let start = face.rawValue * size * size
+        let end = (face.rawValue + 1) * size * size
         
         for index in start ..< end {
             valueBuffer[index] = value
@@ -159,8 +195,7 @@ class RubiksCube {
         }
         
         if layer.depth == size - 1 {
-            let oppositeFace = (layer.face + 3) % 6
-            _turnFaceOnly(oppositeFace, count: count)
+            _turnFaceOnly(layer.oppositeFace, count: count)
         }
     }
     
@@ -188,10 +223,10 @@ class RubiksCube {
     /// It's assumed the layer is in range; make sure to check this before calling
     /// the function!
     private func _turnSidesOnly(layer: Layer, count: Int) {
-        let f1 = (layer.face + 1) % 6
-        let f2 = (layer.face + 2) % 6
-        let f4 = (layer.face + 4) % 6
-        let f5 = (layer.face + 5) % 6
+        let f1 = layer.face + 1
+        let f2 = layer.face + 2
+        let f4 = layer.face + 4
+        let f5 = layer.face + 5
         
         let d  = layer.depth
         let dR = size - 1 - layer.depth
@@ -223,9 +258,8 @@ extension RubiksCube {
     /// Construct a solved cube.
     static func solvedRubiksCube(size: Int) -> RubiksCube {
         let cube = RubiksCube(size: size)
-        for value in 0..<6 {
-            let face = Face(value)
-            cube.fill(value, onFace: face)
+        for face in Face.allCases {
+            cube.fill(face.rawValue, onFace: face)
         }
         return cube
     }
@@ -233,12 +267,11 @@ extension RubiksCube {
     /// Returns `true` if the value at each position on the cube is equal to its face.
     /// Otherwise returns `false`.
     var isSolved: Bool {
-        for faceAsInteger in 0..<6 {
+        for face in Face.allCases {
             for x in 0 ..< size {
                 for y in 0 ..< size {
-                    let face = Face(faceAsInteger)
                     let position = Position(face: face, x: x, y: y)
-                    if self[position] != faceAsInteger { return false }
+                    if self[position] != face.rawValue { return false }
                 }
             }
         }
@@ -251,7 +284,7 @@ extension RubiksCube {
         let numberOfMoves = 2 * (size * size + 1) + Int.random(in: 0...7)
         
         for _ in 0 ..< numberOfMoves {
-            let face = Face(Int.random(in: 0..<6))
+            let face = Face.random
             let depth = Int.random(in: 0 ..< size)
             let layer = Layer(face: face, depth: depth)
             let count = Int.random(in: 1...3)

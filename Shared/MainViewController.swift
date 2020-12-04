@@ -19,8 +19,33 @@ class MainViewController: NSViewController {
     
     // Computed properties
     
-    var frontFace: RubiksCube.Face? { self.frontFaceDropdown.selectedItem?.tag }
-    var topFace: RubiksCube.Face? { self.topFaceDropdown.selectedItem?.tag }
+    var frontFace: RubiksCube.Face? {
+        if let tag = frontFaceDropdown?.selectedItem?.tag {
+            return RubiksCube.Face(rawValue: tag)!
+        } else {
+            return nil
+        }
+    }
+    
+    var topFace: RubiksCube.Face? {
+        if let tag = topFaceDropdown?.selectedItem?.tag {
+            return RubiksCube.Face(rawValue: tag)!
+        } else {
+            return nil
+        }
+    }
+    
+    var faceToRotate: RubiksCube.Face? {
+        if let tag = faceToRotateDropdown?.selectedItem?.tag {
+            return RubiksCube.Face(rawValue: tag)!
+        } else {
+            return nil
+        }
+    }
+    
+    var depthToRotateAt: Int? {
+        depthToRotateAtDropdown?.selectedItem?.tag
+    }
     
     // UI elements
     
@@ -102,10 +127,8 @@ class MainViewController: NSViewController {
         // Determine the face that was clicked on, by maximising the dot product between the
         // location in the scene and the direction for that face.
         
-        let selectedFace = (0..<6).max() {
-            let u = direction(forFace: $0)
-            let v = direction(forFace: $1)
-            return sceneLocation.dot(u) < sceneLocation.dot(v)
+        let selectedFace = RubiksCube.Face.allCases.max() { face1, face2 in
+            sceneLocation.dot(face1.direction) < sceneLocation.dot(face2.direction)
         }!
         
         // Determine the mouse coordinates relative to the face.
@@ -114,10 +137,9 @@ class MainViewController: NSViewController {
         let sceneY = sceneLocation.y
         let sceneZ = sceneLocation.z
         
-        let directionForSelectedFace = direction(forFace: selectedFace)
-        let dirX = directionForSelectedFace.x // either 0, +1 or -1
-        let dirY = directionForSelectedFace.y // ...
-        let dirZ = directionForSelectedFace.z // ...
+        let dirX = selectedFace.direction.x // either 0, +1 or -1
+        let dirY = selectedFace.direction.y // ...
+        let dirZ = selectedFace.direction.z // ...
         
         // Note: this expression was worked out with pen and paper, by writing down
         // what the (x,y) coordinates need to be for each direction. There's no clever
@@ -184,15 +206,13 @@ class MainViewController: NSViewController {
         let view = self.view as! MainView
         
         // Access properties from the user interface.
-        let face = faceToRotateDropdown.selectedItem!.tag
-        let depth = depthToRotateAtDropdown.selectedItem!.tag
-        let layer = RubiksCube.Layer(face: face, depth: depth)
+        let layer = RubiksCube.Layer(face: faceToRotate!, depth: depthToRotateAt!)
         let numberOfTurnsExcludingReflection = numberOfTurnsTextField.integerValue
         
         // If the face is odd, reverse the direction of rotation. This is needed because the cube's frame
         // of reference is reflected on each successive face.
         let numberOfTurns: Int
-        if face % 2 == 0 {
+        if faceToRotate!.rawValue % 2 == 0 {
             numberOfTurns = numberOfTurnsExcludingReflection
         } else {
             numberOfTurns = -numberOfTurnsExcludingReflection
@@ -208,8 +228,8 @@ class MainViewController: NSViewController {
         // Hide all items in the top face dropdown that aren't adjacent to the front face.
         let topFaceItems = self.topFaceDropdown?.itemArray ?? []
         for item in topFaceItems {
-            let face = item.tag
-            item.isHidden = (frontFace == nil || face == frontFace! || (face + 3) % 6 == frontFace!)
+            let face = RubiksCube.Face(rawValue: item.tag)!
+            item.isHidden = (frontFace == nil || face == frontFace! || face.opposite == frontFace!)
         }
         
         // Deselect the top face if it's a hidden item.
@@ -239,7 +259,7 @@ class MainViewController: NSViewController {
                 return
             }
             
-            if (frontFace + 3) % 6 == topFace {
+            if frontFace.isOpposite(to: topFace) {
                 let alert = NSAlert()
                 alert.alertStyle = .warning
                 alert.messageText = "Make sure the front and top faces are adjacent before trying to orient the Rubik's cube."
@@ -279,11 +299,11 @@ class MainViewController: NSViewController {
         let description: String
         
         if let selectedPosition = self.selectedPosition {
-            let face = selectedPosition.face + 1
-            let x = selectedPosition.x + 1
-            let y = selectedPosition.y + 1
+            let faceAsRawValue = selectedPosition.face.rawValue
+            let x = selectedPosition.x
+            let y = selectedPosition.y
             
-            description = "Selected sticker: (\(face),\(x),\(y))"
+            description = "Selected sticker: (\(faceAsRawValue + 1),\(x + 1),\(y + 1))"
         } else {
             description = "No sticker is selected.\nClick on the cube to select one."
         }

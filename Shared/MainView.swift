@@ -147,24 +147,18 @@ class MainView: NSOpenGLView {
     func setUpCubeRotation(toFrontFace frontFace: RubiksCube.Face, topFace: RubiksCube.Face) {
         // It's an error if the faces are either the same or on opposite sides of the cube
         precondition(frontFace != topFace, "Front and top faces cannot be the same")
-        precondition((frontFace + 3) % 6 != topFace, "Front and top faces cannot be opposite")
+        precondition(!frontFace.isOpposite(to: topFace), "Front and top faces cannot be opposite")
         
 //        print("front face is \(frontFace), top face is \(topFace)")
         
-        // Find the vectors pointing in the directions of what will become the front and top faces.
-        // Note: the two vectors will be perpendicular.
-        let frontFacingDirection = direction(forFace: frontFace)
-        let topFacingDirection = direction(forFace: topFace)
-        
-        // Set the y direction to the top face, and the z direction to the front face.
-        // Then rotate by 1/12 turn anticlockwise around the x axis, so that part of the
-        // top face is visible.
+        // Set the y direction to point at the top face, and the z direction to point at the front face.
+        // Then rotate by 1/12 turn anticlockwise around the x axis, so that part of the top face is visible.
         let sn: Double = sin(.pi/6)
         let cs: Double = cos(.pi/6)
         // TODO: Check that the transformation is correct. (There might be a bug in another
         // part of the code that means the signs in front of `sn` are the wrong way round.)
-        let yDirection = cs * topFacingDirection - sn * frontFacingDirection
-        let zDirection = sn * topFacingDirection + cs * frontFacingDirection
+        let yDirection = cs * topFace.direction - sn * frontFace.direction
+        let zDirection = sn * topFace.direction + cs * frontFace.direction
         
         // Set the x direction to the cross product of the two vectors.
         // This keeps the same orientation as the original (i,j,k) axes.

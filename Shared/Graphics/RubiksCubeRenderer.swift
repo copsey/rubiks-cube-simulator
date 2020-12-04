@@ -281,14 +281,14 @@ class RubiksCubeRenderer {
         
         let rotatedLayer = self.rotatedLayerAndAngle!.0
         let rotatedFace = rotatedLayer.face
-        let oppositeFace = (rotatedFace + 3) % 6
+        let oppositeFace = rotatedLayer.oppositeFace
         let angle = self.rotatedLayerAndAngle!.1
         
         let cubeLength = self.cubeLength
         let cubeletLength = self.cubeletLength
 
         // Bring the origin to the face of rotation.
-        for _ in 0 ..< rotatedFace {
+        for _ in 0 ..< rotatedFace.rawValue {
             self.bringOriginToNextFace()
         }
 
@@ -355,9 +355,10 @@ class RubiksCubeRenderer {
             
             for z in 0..<n {
                 for x in 0..<n {
-                    let face = (rotatedLayer.face + 5) % 6
+                    let face = rotatedFace + 5
                     let xRelativeToFace = z
                     let yRelativeToFace = x
+                    let position = RubiksCube.Position(face: face, x: xRelativeToFace, y: yRelativeToFace)
                     
                     GL.pushMatrix()
                     
@@ -370,7 +371,7 @@ class RubiksCubeRenderer {
                     GL.translate(by: cubeletLength * Vector3(Double(x), 0, Double(z)))
                     GL.rotate(angle: .pi/2, axis: .i)
                     
-                    self.renderSticker(at: .init(face: face, x: xRelativeToFace, y: yRelativeToFace))
+                    self.renderSticker(at: position)
                     
                     GL.popMatrix()
                 }
@@ -380,9 +381,10 @@ class RubiksCubeRenderer {
 
             for z in 0..<n {
                 for x in 0..<n {
-                    let face = (rotatedLayer.face + 1) % 6
+                    let face = rotatedFace + 1
                     let xRelativeToFace = x
                     let yRelativeToFace = n - 1 - z
+                    let position = RubiksCube.Position(face: face, x: xRelativeToFace, y: yRelativeToFace)
                     
                     GL.pushMatrix()
                     
@@ -395,7 +397,7 @@ class RubiksCubeRenderer {
                     GL.translate(by: cubeletLength * Vector3(Double(x), 0, Double(z)))
                     GL.rotate(angle: .pi/2, axis: .i)
                     
-                    self.renderSticker(at: .init(face: face, x: xRelativeToFace, y: yRelativeToFace))
+                    self.renderSticker(at: position)
                     
                     GL.popMatrix()
                 }
@@ -405,9 +407,10 @@ class RubiksCubeRenderer {
             
             for z in 0..<n {
                 for x in 0..<n {
-                    let face = (rotatedLayer.face + 2) % 6
+                    let face = rotatedFace + 2
                     let xRelativeToFace = n - 1 - z
                     let yRelativeToFace = x
+                    let position = RubiksCube.Position(face: face, x: xRelativeToFace, y: yRelativeToFace)
                     
                     GL.pushMatrix()
                     
@@ -420,7 +423,7 @@ class RubiksCubeRenderer {
                     GL.translate(by: cubeletLength * Vector3(Double(x), 0, Double(z)))
                     GL.rotate(angle: .pi/2, axis: .i)
                     
-                    self.renderSticker(at: .init(face: face, x: xRelativeToFace, y: yRelativeToFace))
+                    self.renderSticker(at: position)
                     
                     GL.popMatrix()
                 }
@@ -430,9 +433,10 @@ class RubiksCubeRenderer {
             
             for z in 0..<n {
                 for x in 0..<n {
-                    let face = (rotatedFace + 4) % 6
+                    let face = rotatedFace + 4
                     let xRelativeToFace = x
                     let yRelativeToFace = z
+                    let position = RubiksCube.Position(face: face, x: xRelativeToFace, y: yRelativeToFace)
                     
                     GL.pushMatrix()
                     
@@ -445,7 +449,7 @@ class RubiksCubeRenderer {
                     GL.translate(by: cubeletLength * Vector3(Double(x), 0, Double(z)))
                     GL.rotate(angle: .pi/2, axis: .i)
                     
-                    self.renderSticker(at: .init(face: face, x: xRelativeToFace, y: yRelativeToFace))
+                    self.renderSticker(at: position)
                     
                     GL.popMatrix()
                 }
@@ -462,7 +466,7 @@ class RubiksCubeRenderer {
         do {
             GL.pushMatrix()
             
-            for face in 0..<6 {
+            for face in RubiksCube.Face.allCases {
                 self.renderStickers(onFace: face)
                 self.bringOriginToNextFace()
             }
@@ -688,16 +692,17 @@ class RubiksCubeRenderer {
     }
 }
 
-/// Find the unit vector perpendicular to the plane that the given Rubik's Cube face lies within,
-/// with its sign adjusted to point from the cube's centre towards the face.
-func direction(forFace face: RubiksCube.Face) -> Vector3<Double> {
-    switch face {
-        case 0:     return  .k
-        case 1:     return  .i
-        case 2:     return  .j
-        case 3:     return -.k
-        case 4:     return -.i
-        case 5:     return -.j
-        default:    fatalError("Unexpected face of Rubik's Cube")
+extension RubiksCube.Face {
+    /// Find the unit vector perpendicular to the plane that the specified face lies within,
+    /// with its sign adjusted to point from the cube's centre towards the face.
+    var direction: Vector3<Double> {
+        switch self {
+            case .first:     return  .k
+            case .second:    return  .i
+            case .third:     return  .j
+            case .fourth:    return -.k
+            case .fifth:     return -.i
+            case .sixth:     return -.j
+        }
     }
 }
