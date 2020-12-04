@@ -268,7 +268,7 @@ class MainViewController: NSViewController {
         
         if let selectedPosition = self.selectedPosition {
             let value = self.stickerColorDropdown.indexOfSelectedItem
-            view.rubiksCube[position: selectedPosition] = value
+            view.rubiksCube[selectedPosition] = value
             
             view.needsDisplay = true
         }
@@ -296,11 +296,10 @@ class MainViewController: NSViewController {
         let view = self.view as! MainView
         
         if let selectedPosition = self.selectedPosition {
-            let rubiksCube = view.rubiksCube
-            let value = rubiksCube[position: selectedPosition]
+            let valueAtSelectedPosition = view.rubiksCube[selectedPosition]
 
-            if value >= 0 && value < 6 {
-                self.stickerColorDropdown?.selectItem(at: value)
+            if valueAtSelectedPosition >= 0 && valueAtSelectedPosition < 6 {
+                self.stickerColorDropdown?.selectItem(at: valueAtSelectedPosition)
             } else {
                 self.stickerColorDropdown?.select(nil)
             }
@@ -324,19 +323,19 @@ class MainViewController: NSViewController {
             self.selectedPosition = nil
             
             // Change the length of the cube.
-            let newLength = selectedItem.tag
-            view.rubiksCube = makeSolvedRubiksCube(length: newLength)
+            let newSize = selectedItem.tag
+            view.rubiksCube = .solvedRubiksCube(size: newSize)
             
             // Change the options available in the depth dropdown.
-            while self.depthToRotateAtDropdown.numberOfItems > newLength {
-                let lastIndex = self.depthToRotateAtDropdown.numberOfItems - 1
-                self.depthToRotateAtDropdown.removeItem(at: lastIndex)
+            while depthToRotateAtDropdown.numberOfItems > newSize {
+                let lastIndex = depthToRotateAtDropdown.numberOfItems - 1
+                depthToRotateAtDropdown.removeItem(at: lastIndex)
             }
-            while (self.depthToRotateAtDropdown.numberOfItems < newLength) {
-                let newDepth = self.depthToRotateAtDropdown.numberOfItems
+            while (depthToRotateAtDropdown.numberOfItems < newSize) {
+                let newDepth = depthToRotateAtDropdown.numberOfItems
                 
-                self.depthToRotateAtDropdown.addItem(withTitle: String(newDepth + 1))
-                let newItem = self.depthToRotateAtDropdown.lastItem!
+                depthToRotateAtDropdown.addItem(withTitle: String(newDepth + 1))
+                let newItem = depthToRotateAtDropdown.lastItem!
                 newItem.tag = newDepth
             }
             
@@ -348,8 +347,8 @@ class MainViewController: NSViewController {
     func updateCubeLengthDropdown() {
         let view = self.view as! MainView
         
-        let rubiksCubeLength = view.rubiksCube.valuesPerSide
-        self.cubeLengthDropdown?.selectItem(withTag: rubiksCubeLength)
+        let rubiksCubeSize = view.rubiksCube.size
+        self.cubeLengthDropdown?.selectItem(withTag: rubiksCubeSize)
     }
     
     @IBAction func resetRubiksCube(_ sender: Any) {
@@ -359,8 +358,8 @@ class MainViewController: NSViewController {
         view.finishLayerRotation()
         
         // Reset the cube.
-        let rubiksCubeLength = view.rubiksCube.valuesPerSide
-        view.rubiksCube = makeSolvedRubiksCube(length: rubiksCubeLength)
+        let rubiksCubeSize = view.rubiksCube.size
+        view.rubiksCube = .solvedRubiksCube(size: rubiksCubeSize)
         
         // Update the view.
         view.needsDisplay = true
@@ -373,10 +372,10 @@ class MainViewController: NSViewController {
         view.finishLayerRotation()
         
         // Set all values on the cube to -1.
-        view.rubiksCube.fill(value: -1)
+        view.rubiksCube.fill(-1)
         
         // Update the view.
-        self.view.needsDisplay = true
+        view.needsDisplay = true
     }
     
     @IBAction func scrambleRubiksCube(_ sender: Any) {
@@ -386,9 +385,9 @@ class MainViewController: NSViewController {
         view.finishLayerRotation()
         
         // Scramble the cube.
-        scramble(view.rubiksCube)
+        view.rubiksCube.scramble()
         
         // Update the view.
-        self.view.needsDisplay = true
+        view.needsDisplay = true
     }
 }

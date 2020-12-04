@@ -7,6 +7,8 @@
 
 import Foundation
 
+// Core functionality
+
 class RubiksCube {
     /// Type for a single value.
     typealias Value = Int
@@ -27,141 +29,118 @@ class RubiksCube {
         let y: Int
     }
     
-    /// How many values there are per side.
-    var valuesPerSide: Int {
-        length
+    /// How many values there are per side of the cube.
+    let size: Int
+    
+    /// Buffer containing all of the cube's values.
+    private let valueBuffer: UnsafeMutableBufferPointer<Value>
+    
+    /// Construct a cube of size zero.
+    init() {
+        self.size = 0
+        self.valueBuffer = .allocate(capacity: 0)
     }
     
-    /// How many values there are per face.
-    var valuesPerFace: Int {
-        length * length
-    }
-    
-    /// How many values there are in total.
-    var numberOfValues: Int {
-        length * length * 6
-    }
-    
-    private let length: Int
-    private let buffer: UnsafeMutablePointer<Value>
-    
-    /// Construct an uninitialised cube of the given length.
+    /// Construct an uninitialised cube of the given size.
     /// Warning: You must first initialise each of the cube's values before trying to access it.
-    init(length: Int) {
-        precondition(length >= 0, "Can't construct a cube with length less than zero")
-        self.length = length
-        self.buffer = .allocate(capacity: length * length * 6)
+    private init(size: Int) {
+        precondition(size >= 0, "Can't construct a cube with size less than zero")
+        
+        self.size = size
+        self.valueBuffer = .allocate(capacity: size * size * 6)
+    }
+    
+    /// Construct a cube of the given size filled with a specified value.
+    convenience init(size: Int, filledWithValue value: Value) {
+        self.init(size: size)
+        
+        valueBuffer.assign(repeating: value)
     }
     
     deinit {
-        buffer.deallocate()
+        valueBuffer.deallocate()
     }
     
     /// Check if the given layer is valid.
-    func inRange(layer: Layer) -> Bool {
+    func layerIsInRange(_ layer: Layer) -> Bool {
         if layer.face < 0 || layer.face >= 6 { return false }
-        if layer.depth < 0 || layer.depth >= self.length { return false }
+        if layer.depth < 0 || layer.depth >= size { return false }
         return true
     }
     
     /// Check if the given position is valid.
-    func inRange(position p: Position) -> Bool {
+    func positionIsInRange(_ p: Position) -> Bool {
         if p.face < 0 || p.face >= 6 { return false }
-        if p.x < 0 || p.x >= self.length { return false }
-        if p.y < 0 || p.y >= self.length { return false }
+        if p.x < 0 || p.x >= size { return false }
+        if p.y < 0 || p.y >= size { return false }
         return true
     }
     
     /// Convert a position on the cube to an index in the internal array of values.
     /// Before calling this method, you should make sure the position is in range.
-    private func toIndex(position p: Position) -> Int {
-        p.x + p.y * length + p.face * length * length
+    private func indexFromPosition(_ p: Position) -> Int {
+        p.x + p.y * size + p.face * size * size
     }
     
     /// Access the value at the given position.
-    subscript(position p: Position) -> Value {
+    subscript(_ p: Position) -> Value {
         get {
-            precondition(inRange(position: p), "Position is out of range")
-            return buffer[toIndex(position: p)]
+            precondition(positionIsInRange(p), "Position is out of range")
+            return valueBuffer[indexFromPosition(p)]
         }
         set {
-            precondition(inRange(position: p), "Position is out of range")
-            buffer[toIndex(position: p)] = newValue
-        }
-    }
-    
-    /// Get the value at the given position, or `nil` if the position is out of range.
-    func getValue(atPosition p: Position) -> Value? {
-        inRange(position: p) ? buffer[toIndex(position: p)] : nil
-    }
-    
-    /// Set the value at the given position.
-    /// Returns the old value, or `nil` if the position is out of range.
-    func setValue(atPosition p: Position, toValue newValue: Value) -> Value? {
-        if inRange(position: p) {
-            let index = toIndex(position: p)
-            let oldValue = buffer[index]
-            buffer[index] = newValue
-            return oldValue
-        } else {
-            return nil
+            precondition(positionIsInRange(p), "Position is out of range")
+            valueBuffer[indexFromPosition(p)] = newValue
         }
     }
     
     /// Set each value on the cube to the given constant.
-    func fill(value: Value) {
-        for index in 0..<self.numberOfValues {
-            buffer[index] = value
-        }
+    func fill(_ value: Value) {
+        valueBuffer.assign(repeating: value)
     }
     
-    /// Set each value on a specific face of the cube to the given constant.
-    func fill(face: Face, value: Value) {
-        let start = self.valuesPerFace * face
-        let end = self.valuesPerFace * (face + 1)
+    /// Set each value on a specified face of the cube to the given constant.
+    func fill(_ value: Value, onFace face: Face) {
+        let start = face * size * size
+        let end = (face + 1) * size * size
         
         for index in start ..< end {
-            self.buffer[index] = value
+            valueBuffer[index] = value
         }
     }
     
     /// Rotate the values held at the four positions a given number of times.
-    private func rotate(position1 p1: Position, position2 p2: Position,
-                        position3 p3: Position, position4 p4: Position,
+    private func rotate(_ position1: Position, _ position2: Position,
+                        _ position3: Position, _ position4: Position,
                         count: Int) {
-        var temp: Value
-        
-        let index1 = toIndex(position: p1)
-        let index2 = toIndex(position: p2)
-        let index3 = toIndex(position: p3)
-        let index4 = toIndex(position: p4)
+        let index1 = indexFromPosition(position1)
+        let index2 = indexFromPosition(position2)
+        let index3 = indexFromPosition(position3)
+        let index4 = indexFromPosition(position4)
         
         let countMod4 = (count < 0) ? (count % 4 + 4) : (count % 4)
+        
         switch countMod4 {
-        case 1:
-            temp = buffer[index1]
-            buffer[index1] = buffer[index4]
-            buffer[index4] = buffer[index3]
-            buffer[index3] = buffer[index2]
-            buffer[index2] = temp
-            
-        case 2:
-            temp = buffer[index1]
-            buffer[index1] = buffer[index3]
-            buffer[index3] = temp
-            temp = buffer[index2]
-            buffer[index2] = buffer[index4]
-            buffer[index4] = temp
-            
-        case 3:
-            temp = buffer[index1]
-            buffer[index1] = buffer[index2]
-            buffer[index2] = buffer[index3]
-            buffer[index3] = buffer[index4]
-            buffer[index4] = temp
-            
-        default:
-            return
+            case 1:
+                let temp = valueBuffer[index1]
+                valueBuffer[index1] = valueBuffer[index4]
+                valueBuffer[index4] = valueBuffer[index3]
+                valueBuffer[index3] = valueBuffer[index2]
+                valueBuffer[index2] = temp
+                
+            case 2:
+                valueBuffer.swapAt(index1, index3)
+                valueBuffer.swapAt(index2, index4)
+                
+            case 3:
+                let temp = valueBuffer[index1]
+                valueBuffer[index1] = valueBuffer[index2]
+                valueBuffer[index2] = valueBuffer[index3]
+                valueBuffer[index3] = valueBuffer[index4]
+                valueBuffer[index4] = temp
+                
+            default:
+                return
         }
     }
     
@@ -171,7 +150,7 @@ class RubiksCube {
     /// the layer: so if the x- and y-axes are swapped, then the rotation
     /// will occur in the opposite direction.
     func turn(layer: Layer, count: Int) {
-        precondition(inRange(layer: layer), "Layer (\(layer.face), \(layer.depth)) is out of range")
+        precondition(layerIsInRange(layer), "Layer (\(layer.face), \(layer.depth)) is out of range")
         
         _turnSidesOnly(layer: layer, count: count)
         
@@ -179,7 +158,7 @@ class RubiksCube {
             _turnFaceOnly(layer.face, count: count)
         }
         
-        if layer.depth == self.length - 1 {
+        if layer.depth == size - 1 {
             let oppositeFace = (layer.face + 3) % 6
             _turnFaceOnly(oppositeFace, count: count)
         }
@@ -188,18 +167,17 @@ class RubiksCube {
     /// Rotate the values on a face anticlockwise by the given number of turns.
     /// No other values are altered, including the sides of the face.
     private func _turnFaceOnly(_ face: Face, count: Int) {
-        for i in 0 ..< length / 2 {
-            for j in i ..< length - 1 - i {
-                let iR = length - 1 - i
-                let jR = length - 1 - j
+        for i in 0 ..< size / 2 {
+            for j in i ..< size - 1 - i {
+                let iR = size - 1 - i
+                let jR = size - 1 - j
                 
                 let p1 = Position(face: face, x: i,  y: j)
                 let p2 = Position(face: face, x: jR, y: i)
                 let p3 = Position(face: face, x: iR, y: jR)
                 let p4 = Position(face: face, x: j,  y: iR)
                 
-                rotate(position1: p1, position2: p2, position3: p3,
-                       position4: p4, count: count)
+                rotate(p1, p2, p3, p4, count: count)
             }
         }
     }
@@ -216,62 +194,69 @@ class RubiksCube {
         let f5 = (layer.face + 5) % 6
         
         let d  = layer.depth
-        let dR = self.length - 1 - layer.depth
+        let dR = size - 1 - layer.depth
         
-        for i in 0 ..< self.length {
+        for i in 0 ..< size {
             let p1 = Position(face: f1, x: i,  y: d)
             let p2 = Position(face: f2, x: d,  y: i)
             let p3 = Position(face: f4, x: i,  y: dR)
             let p4 = Position(face: f5, x: dR, y: i)
             
-            self.rotate(position1: p1, position2: p2, position3: p3, position4: p4, count: count)
+            rotate(p1, p2, p3, p4, count: count)
         }
     }
 }
 
-/// Create a cube with each value set to -1.
-func makeBlankRubiksCube(length: Int) -> RubiksCube {
-    let cube = RubiksCube(length: length)
-    cube.fill(value: -1)
-    return cube
-}
+// Utility methods and properties
 
-/// Create a solved cube.
-func makeSolvedRubiksCube(length: Int) -> RubiksCube {
-    let cube = RubiksCube(length: length)
-    for face in 0..<6 {
-        cube.fill(face: face, value: face)
+extension RubiksCube {
+    /// Construct a cube where the values are not yet initialized.
+    static func uninitializedRubiksCube(size: Int) -> RubiksCube {
+        RubiksCube(size: size)
     }
-    return cube
-}
-
-/// Check if the cube is in a solved state.
-func isSolved(rubiksCube cube: RubiksCube) -> Bool {
-    let n = cube.valuesPerSide
     
-    for face in 0..<6 {
-        for x in 0..<n {
-            for y in 0..<n {
-                let p = RubiksCube.Position(face: face, x: x, y: y)
-                if cube[position: p] != face { return false }
+    /// Construct a cube with each value set to -1.
+    static func blankRubiksCube(size: Int) -> RubiksCube {
+        RubiksCube(size: size, filledWithValue: -1)
+    }
+
+    /// Construct a solved cube.
+    static func solvedRubiksCube(size: Int) -> RubiksCube {
+        let cube = RubiksCube(size: size)
+        for value in 0..<6 {
+            let face = Face(value)
+            cube.fill(value, onFace: face)
+        }
+        return cube
+    }
+    
+    /// Returns `true` if the value at each position on the cube is equal to its face.
+    /// Otherwise returns `false`.
+    var isSolved: Bool {
+        for faceAsInteger in 0..<6 {
+            for x in 0 ..< size {
+                for y in 0 ..< size {
+                    let face = Face(faceAsInteger)
+                    let position = Position(face: face, x: x, y: y)
+                    if self[position] != faceAsInteger { return false }
+                }
             }
         }
+        
+        return true
     }
     
-    return true
-}
-
-/// Rotate layers of the cube at random to get a new permutation.
-func scramble(_ cube: RubiksCube) {
-    let n = cube.valuesPerSide
-    let numberOfMoves = 2 * (n * n + 1) + Int.random(in: 0...7)
-    
-    for _ in 0 ..< numberOfMoves {
-        let face = RubiksCube.Face(Int.random(in: 0..<6))
-        let depth = Int.random(in: 0..<n)
-        let layer = RubiksCube.Layer(face: face, depth: depth)
-        let count = Int.random(in: 1...3)
+    /// Rotate layers of the cube at random to get a new permutation.
+    func scramble() {
+        let numberOfMoves = 2 * (size * size + 1) + Int.random(in: 0...7)
         
-        cube.turn(layer: layer, count: count)
+        for _ in 0 ..< numberOfMoves {
+            let face = Face(Int.random(in: 0..<6))
+            let depth = Int.random(in: 0 ..< size)
+            let layer = Layer(face: face, depth: depth)
+            let count = Int.random(in: 1...3)
+            
+            turn(layer: layer, count: count)
+        }
     }
 }

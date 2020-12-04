@@ -18,8 +18,8 @@ class RubiksCubeRenderer {
     let cornerRadius:  Scalar = 0.0011 // ...
     let stickerLength: Scalar = 0.0158 // ...
     let stickerDepth:  Scalar = 0.0002 // ...
-    var cubeLength: Scalar { self.cubeletLength * Scalar(self.rubiksCube.valuesPerSide) }
-    var cubeRadius: Scalar { self.cubeLength * sqrt(0.75) }
+    var cubeLength: Scalar { cubeletLength * Scalar(rubiksCube.size) }
+    var cubeRadius: Scalar { cubeLength * sqrt(0.75) }
     
     /// Graphical fidelity when rendering the cubelets. Must be at least zero.
     var cubeletLevelOfDetail = 4 {
@@ -277,7 +277,7 @@ class RubiksCubeRenderer {
     }
     
     private func renderCubeWithRotatedLayer() {
-        let n = self.rubiksCube.valuesPerSide
+        let n = rubiksCube.size
         
         let rotatedLayer = self.rotatedLayerAndAngle!.0
         let rotatedFace = rotatedLayer.face
@@ -456,7 +456,7 @@ class RubiksCubeRenderer {
     }
     
     private func renderCubeWithoutRotatedLayer() {
-        let n = self.rubiksCube.valuesPerSide
+        let n = rubiksCube.size
         
         // Render the stickers.
         do {
@@ -589,27 +589,26 @@ class RubiksCubeRenderer {
         GL.endShape()
     }
     
-    private func renderSticker(at p: RubiksCube.Position) {
-        let value = self.rubiksCube[position: p]
-        let color = self.stickerColors[value]!
+    private func renderSticker(at position: RubiksCube.Position) {
+        let value = rubiksCube[position]
+        let color = stickerColors[value]!
         
-        self.renderSticker(color: color)
+        renderSticker(color: color)
     }
 
     private func renderStickers(onFace face: RubiksCube.Face) {
-        let cubeletLength = self.cubeletLength
-        let n = rubiksCube.valuesPerSide
+        let n = rubiksCube.size
 
         for x in 0..<n {
             for y in 0..<n {
-                let p = RubiksCube.Position(face: face, x: x, y: y)
-                let value = self.rubiksCube[position: p]
-                let color = self.stickerColors[value]!
+                let position = RubiksCube.Position(face: face, x: x, y: y)
+                let value = rubiksCube[position]
+                let color = stickerColors[value]!
                 
                 GL.pushMatrix()
 
                 GL.translate(by: cubeletLength * Vector3(Double(x), Double(y), 0))
-                self.renderSticker(color: color)
+                renderSticker(color: color)
                 
                 GL.popMatrix()
             }
@@ -617,8 +616,6 @@ class RubiksCubeRenderer {
     }
 
     private func bringOriginToNextFace() {
-        let length = self.cubeLength
-
         // Apply a translation `A` along the x axis, followed by a
         // rotation `B` by 1/4 turn anticlockwise around the y axis, and
         // finally a reflection `C` in the plane x=y.
@@ -628,49 +625,45 @@ class RubiksCubeRenderer {
         // i.e. `A * B * C` instead of `C * B * A`.
         
         let transform = Matrix4x4(
-            0,  0, 1, length,
-            1,  0, 0,      0,
-            0, -1, 0,      0,
-            0,  0, 0,      1
+            0,  0, 1, cubeLength,
+            1,  0, 0,          0,
+            0, -1, 0,          0,
+            0,  0, 0,          1
         )
         
         GL.multiplyMatrix(by: transform)
     }
 
     private func bringOriginToOppositeFace() {
-        let length = self.cubeLength
-
         // Apply a translation to the opposite corner of the cube,
         // followed by a reflection in each of the x, y and z directions.
         
         let transform = Matrix4x4(
-            -1,  0,  0,  length,
-             0, -1,  0,  length,
-             0,  0, -1, -length,
-             0,  0,  0,       1
+            -1,  0,  0,  cubeLength,
+             0, -1,  0,  cubeLength,
+             0,  0, -1, -cubeLength,
+             0,  0,  0,           1
         )
         
         GL.multiplyMatrix(by: transform)
     }
     
     private func bringOriginToNextSide() {
-        let length = self.cubeLength
-        
         // Apply a translation by the cube's length in the x direction,
         // then a rotation by 1/4 turn anticlockwise around the z axis.
         
         let transform = Matrix4x4(
-            0, -1, 0, length,
-            1,  0, 0,      0,
-            0,  0, 1,      0,
-            0,  0, 0,      1
+            0, -1, 0, cubeLength,
+            1,  0, 0,          0,
+            0,  0, 1,          0,
+            0,  0, 0,          1
         )
         
         GL.multiplyMatrix(by: transform)
     }
     
     private func rotateOriginAroundCentralAxis(byAngle angle: Double) {
-        let halfLength = self.cubeLength / 2
+        let halfLength = cubeLength / 2
         
         // Apply a translation `A` towards the cube's centre, followed by
         // a rotation `B` around the cube's central axis anticlockwise by the

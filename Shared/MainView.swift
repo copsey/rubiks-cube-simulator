@@ -31,8 +31,7 @@ class MainView: NSOpenGLView {
     
     required init?(coder: NSCoder) {
         // Display a solved 3x3 cube by default.
-        let rubiksCube = makeSolvedRubiksCube(length: 3)
-        self.rubiksCubeRenderer = RubiksCubeRenderer(rubiksCube: rubiksCube)
+        self.rubiksCubeRenderer = RubiksCubeRenderer(rubiksCube: .solvedRubiksCube(size: 3))
         
         super.init(coder: coder)
         
