@@ -1,0 +1,316 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0409041A2563B24C00AC67E1 /* RubiksCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040904192563B24C00AC67E1 /* RubiksCube.swift */; };
+		0409041F2563D3CA00AC67E1 /* LinearAccelerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0409041E2563D3C900AC67E1 /* LinearAccelerator.swift */; };
+		047C125B256291B300183C58 /* RubiksCubeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C125A256291B300183C58 /* RubiksCubeRenderer.swift */; };
+		047DA6AB2577BECD00D74389 /* Matrix4x4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047DA6AA2577BECD00D74389 /* Matrix4x4.swift */; };
+		047E3E4725654EA300CD0E02 /* Quaternion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E3E4625654EA300CD0E02 /* Quaternion.swift */; };
+		047E3E4A256550BF00CD0E02 /* Vector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E3E49256550BF00CD0E02 /* Vector3.swift */; };
+		047E3E512566768F00CD0E02 /* AxisAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E3E502566768F00CD0E02 /* AxisAngle.swift */; };
+		047E3E57256BB89900CD0E02 /* OpenGL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E3E56256BB89900CD0E02 /* OpenGL.swift */; };
+		04801BE2256E51F4005957BF /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04801BE1256E51F4005957BF /* MainView.swift */; };
+		04801BE5256E5C8A005957BF /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04801BE4256E5C8A005957BF /* MainViewController.swift */; };
+		04872E0025724A7600EB8782 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04872DFF25724A7600EB8782 /* Color.swift */; };
+		048E27F22577BB1200DB8B70 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 048E27F02577BB1200DB8B70 /* MainWindow.xib */; };
+		048FE9F72579522D00FF8A07 /* PreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048FE9F62579522D00FF8A07 /* PreferencesController.swift */; };
+		04DB8068257544830000E602 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DB8067257544830000E602 /* main.m */; };
+		F861E76114A9BD67005A5055 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F861E76014A9BD67005A5055 /* Cocoa.framework */; };
+		F861E77E14A9BD79005A5055 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F861E77D14A9BD79005A5055 /* OpenGL.framework */; };
+		F86C99811CC3C01500249217 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F86C99801CC3C01500249217 /* Images.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		040904192563B24C00AC67E1 /* RubiksCube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubiksCube.swift; sourceTree = "<group>"; };
+		0409041E2563D3C900AC67E1 /* LinearAccelerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearAccelerator.swift; sourceTree = "<group>"; };
+		047C125A256291B300183C58 /* RubiksCubeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubiksCubeRenderer.swift; sourceTree = "<group>"; };
+		047DA6AA2577BECD00D74389 /* Matrix4x4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix4x4.swift; sourceTree = "<group>"; };
+		047E3E4625654EA300CD0E02 /* Quaternion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quaternion.swift; sourceTree = "<group>"; };
+		047E3E49256550BF00CD0E02 /* Vector3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vector3.swift; sourceTree = "<group>"; };
+		047E3E502566768F00CD0E02 /* AxisAngle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxisAngle.swift; sourceTree = "<group>"; };
+		047E3E56256BB89900CD0E02 /* OpenGL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenGL.swift; sourceTree = "<group>"; };
+		04801BE1256E51F4005957BF /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		04801BE4256E5C8A005957BF /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		04872DFF25724A7600EB8782 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		048E27EF2577BB1200DB8B70 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		048E27F02577BB1200DB8B70 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		048FE9F62579522D00FF8A07 /* PreferencesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesController.swift; sourceTree = "<group>"; };
+		04DB8067257544830000E602 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F861E75C14A9BD67005A5055 /* Rubik's Cube Simulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rubik's Cube Simulator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F861E76014A9BD67005A5055 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		F861E76314A9BD67005A5055 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		F861E76414A9BD67005A5055 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		F861E76514A9BD67005A5055 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F861E77D14A9BD79005A5055 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		F86C99801CC3C01500249217 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F861E75914A9BD67005A5055 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F861E76114A9BD67005A5055 /* Cocoa.framework in Frameworks */,
+				F861E77E14A9BD79005A5055 /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		048E27EE2577BAD700DB8B70 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				048E27F02577BB1200DB8B70 /* MainWindow.xib */,
+				048E27EF2577BB1200DB8B70 /* Info.plist */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		04DB806C257632500000E602 /* Maths */ = {
+			isa = PBXGroup;
+			children = (
+				047E3E49256550BF00CD0E02 /* Vector3.swift */,
+				047DA6AA2577BECD00D74389 /* Matrix4x4.swift */,
+				047E3E4625654EA300CD0E02 /* Quaternion.swift */,
+				047E3E502566768F00CD0E02 /* AxisAngle.swift */,
+				0409041E2563D3C900AC67E1 /* LinearAccelerator.swift */,
+			);
+			path = Maths;
+			sourceTree = "<group>";
+		};
+		04DB806D257632620000E602 /* Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				04872DFF25724A7600EB8782 /* Color.swift */,
+				047E3E56256BB89900CD0E02 /* OpenGL.swift */,
+				047C125A256291B300183C58 /* RubiksCubeRenderer.swift */,
+			);
+			path = Graphics;
+			sourceTree = "<group>";
+		};
+		F861E75114A9BD66005A5055 = {
+			isa = PBXGroup;
+			children = (
+				F861E76614A9BD67005A5055 /* Shared */,
+				048E27EE2577BAD700DB8B70 /* macOS */,
+				F861E75F14A9BD67005A5055 /* Frameworks */,
+				F861E75D14A9BD67005A5055 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F861E75D14A9BD67005A5055 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F861E75C14A9BD67005A5055 /* Rubik's Cube Simulator.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F861E75F14A9BD67005A5055 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F861E77D14A9BD79005A5055 /* OpenGL.framework */,
+				F861E76014A9BD67005A5055 /* Cocoa.framework */,
+				F861E76214A9BD67005A5055 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F861E76214A9BD67005A5055 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F861E76314A9BD67005A5055 /* AppKit.framework */,
+				F861E76414A9BD67005A5055 /* CoreData.framework */,
+				F861E76514A9BD67005A5055 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		F861E76614A9BD67005A5055 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				04DB806C257632500000E602 /* Maths */,
+				04DB806D257632620000E602 /* Graphics */,
+				040904192563B24C00AC67E1 /* RubiksCube.swift */,
+				04801BE1256E51F4005957BF /* MainView.swift */,
+				04801BE4256E5C8A005957BF /* MainViewController.swift */,
+				048FE9F62579522D00FF8A07 /* PreferencesController.swift */,
+				F86C99801CC3C01500249217 /* Images.xcassets */,
+				04DB8067257544830000E602 /* main.m */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F861E75B14A9BD67005A5055 /* RubiksCubeSimulator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F861E77A14A9BD67005A5055 /* Build configuration list for PBXNativeTarget "RubiksCubeSimulator" */;
+			buildPhases = (
+				F861E75814A9BD67005A5055 /* Sources */,
+				F861E75914A9BD67005A5055 /* Frameworks */,
+				F861E75A14A9BD67005A5055 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RubiksCubeSimulator;
+			productName = Decipher;
+			productReference = F861E75C14A9BD67005A5055 /* Rubik's Cube Simulator.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F861E75314A9BD66005A5055 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1220;
+				ORGANIZATIONNAME = "";
+				TargetAttributes = {
+					F861E75B14A9BD67005A5055 = {
+						LastSwiftMigration = 1220;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F861E75614A9BD66005A5055 /* Build configuration list for PBXProject "RubiksCubeSimulator" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F861E75114A9BD66005A5055;
+			productRefGroup = F861E75D14A9BD67005A5055 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F861E75B14A9BD67005A5055 /* RubiksCubeSimulator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F861E75A14A9BD67005A5055 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F86C99811CC3C01500249217 /* Images.xcassets in Resources */,
+				048E27F22577BB1200DB8B70 /* MainWindow.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F861E75814A9BD67005A5055 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				047E3E512566768F00CD0E02 /* AxisAngle.swift in Sources */,
+				0409041A2563B24C00AC67E1 /* RubiksCube.swift in Sources */,
+				047E3E4A256550BF00CD0E02 /* Vector3.swift in Sources */,
+				0409041F2563D3CA00AC67E1 /* LinearAccelerator.swift in Sources */,
+				047C125B256291B300183C58 /* RubiksCubeRenderer.swift in Sources */,
+				04872E0025724A7600EB8782 /* Color.swift in Sources */,
+				04801BE2256E51F4005957BF /* MainView.swift in Sources */,
+				047DA6AB2577BECD00D74389 /* Matrix4x4.swift in Sources */,
+				047E3E57256BB89900CD0E02 /* OpenGL.swift in Sources */,
+				04801BE5256E5C8A005957BF /* MainViewController.swift in Sources */,
+				04DB8068257544830000E602 /* main.m in Sources */,
+				048FE9F72579522D00FF8A07 /* PreferencesController.swift in Sources */,
+				047E3E4725654EA300CD0E02 /* Quaternion.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F861E77814A9BD67005A5055 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_OPTIMIZATION_LEVEL = 1;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F861E77914A9BD67005A5055 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		F861E77B14A9BD67005A5055 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = macOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackcopsey.rubikscube;
+				PRODUCT_NAME = "Rubik's Cube Simulator";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		F861E77C14A9BD67005A5055 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = macOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackcopsey.rubikscube;
+				PRODUCT_NAME = "Rubik's Cube Simulator";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F861E75614A9BD66005A5055 /* Build configuration list for PBXProject "RubiksCubeSimulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F861E77814A9BD67005A5055 /* Debug */,
+				F861E77914A9BD67005A5055 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F861E77A14A9BD67005A5055 /* Build configuration list for PBXNativeTarget "RubiksCubeSimulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F861E77B14A9BD67005A5055 /* Debug */,
+				F861E77C14A9BD67005A5055 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F861E75314A9BD66005A5055 /* Project object */;
+}
