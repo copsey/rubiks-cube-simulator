@@ -49,6 +49,7 @@ class RubiksCubeRenderer {
     private var cubeletEdgeVertexData: [Vertex] = []
     private var cubeletCornerVertexData: [Vertex] = []
     private var stickerVertexData: [Vertex] = []
+    private var stickerVertexDrawingOrder: [(Int, Int, Int)] = []
     
     /// Layer of the cube being rotated, if any, along with the angle measured in radians.
     var rotatedLayerAndAngle: (RubiksCube.Layer, Scalar)? = nil
@@ -154,7 +155,10 @@ class RubiksCubeRenderer {
         // Case #1: Use rounded corners.
         if stickerLevelOfDetail > 0 {
             stickerVertexData.removeAll()
-            stickerVertexData.reserveCapacity(4 * (stickerLevelOfDetail + 1))
+            stickerVertexData.reserveCapacity(4 * (stickerLevelOfDetail + 1) + 1)
+            
+            // Centre
+            stickerVertexData.append(base + length * Vertex(0.5, 0.5, 0))
             
             // Bottom-left corner
             for i in 0...stickerLevelOfDetail {
@@ -191,15 +195,31 @@ class RubiksCubeRenderer {
 
                 stickerVertexData.append(base + length * Vertex(0, 1, 0) + radius * Vertex(1-sn, cs-1, 0))
             }
+            
+            stickerVertexDrawingOrder.removeAll()
+            stickerVertexDrawingOrder.reserveCapacity(4 * (stickerLevelOfDetail + 1))
+            
+            for i in 0 ... 4 * (stickerLevelOfDetail + 1) {
+                let bufferIndex1 = 0
+                let bufferIndex2 = 1 +       i % (4 * (stickerLevelOfDetail + 1))
+                let bufferIndex3 = 1 + (i + 1) % (4 * (stickerLevelOfDetail + 1))
+                
+                stickerVertexDrawingOrder.append((bufferIndex1, bufferIndex2, bufferIndex3))
+            }
         }
 
         // Case #2: Use sharp corners.
         else {
-            stickerVertexData = [
+            self.stickerVertexData = [
                 base + length * Vertex(0, 0, 0),
                 base + length * Vertex(1, 0, 0),
                 base + length * Vertex(1, 1, 0),
                 base + length * Vertex(0, 1, 0)
+            ]
+            
+            self.stickerVertexDrawingOrder = [
+                (0, 1, 2),
+                (0, 2, 3)
             ]
         }
     }
@@ -558,10 +578,12 @@ class RubiksCubeRenderer {
     private func renderSticker(color: Color) {
         GL.renderColor = color
 
-        GL.beginPolygon()
+        GL.beginTriangles()
 
-        for vertex in stickerVertexData {
-            GL.addVertex(vertex)
+        for (bufferIndex1, bufferIndex2, bufferIndex3) in self.stickerVertexDrawingOrder {
+            GL.addVertex(self.stickerVertexData[bufferIndex1])
+            GL.addVertex(self.stickerVertexData[bufferIndex2])
+            GL.addVertex(self.stickerVertexData[bufferIndex3])
         }
 
         GL.endShape()
