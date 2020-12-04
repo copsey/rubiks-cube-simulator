@@ -45,10 +45,10 @@ class RubiksCubeRenderer {
         }
     }
     
-    private var cubeletFaceVertices: Array<Vertex> = []
-    private var cubeletEdgeVertices: Array<Vertex> = []
-    private var cubeletCornerVertices: Array<Vertex> = []
-    private var stickerVertices: Array<Vertex> = []
+    private var cubeletFaceVertexData: [Vertex] = []
+    private var cubeletEdgeVertexData: [Vertex] = []
+    private var cubeletCornerVertexData: [Vertex] = []
+    private var stickerVertexData: [Vertex] = []
     
     /// Layer of the cube being rotated, if any, along with the angle measured in radians.
     var rotatedLayerAndAngle: (RubiksCube.Layer, Scalar)? = nil
@@ -87,7 +87,7 @@ class RubiksCubeRenderer {
         if cubeletLevelOfDetail > 0 {
             // Compute the face vertices.
             
-            cubeletFaceVertices = [
+            cubeletFaceVertexData = [
                 length * Vertex(0, 0, 0) + radius * Vertex( 1,  1, 0),
                 length * Vertex(1, 0, 0) + radius * Vertex(-1,  1, 0),
                 length * Vertex(1, 1, 0) + radius * Vertex(-1, -1, 0),
@@ -96,48 +96,48 @@ class RubiksCubeRenderer {
 
             // Compute the edge vertices.
             
-            cubeletEdgeVertices.removeAll()
-            cubeletEdgeVertices.reserveCapacity(2 * (cubeletLevelOfDetail + 1))
+            cubeletEdgeVertexData.removeAll()
+            cubeletEdgeVertexData.reserveCapacity(2 * (cubeletLevelOfDetail + 1))
             
             for row in 0...cubeletLevelOfDetail {
                 let theta = 0.5 * .pi * Scalar(row) / Scalar(cubeletLevelOfDetail)
                 let sn = sin(theta)
                 let cs = cos(theta)
 
-                cubeletEdgeVertices.append(length * Vertex(0, 0, 0) + radius * Vertex( 1, 1-sn, 1-cs))
-                cubeletEdgeVertices.append(length * Vertex(1, 0, 0) + radius * Vertex(-1, 1-sn, 1-cs))
+                cubeletEdgeVertexData.append(length * Vertex(0, 0, 0) + radius * Vertex( 1, 1-sn, 1-cs))
+                cubeletEdgeVertexData.append(length * Vertex(1, 0, 0) + radius * Vertex(-1, 1-sn, 1-cs))
             }
 
             // Compute the corner vertices.
             
-            cubeletCornerVertices.removeAll()
-            cubeletCornerVertices.reserveCapacity((cubeletLevelOfDetail + 1) * (cubeletLevelOfDetail + 2) / 2)
+            cubeletCornerVertexData.removeAll()
+            cubeletCornerVertexData.reserveCapacity((cubeletLevelOfDetail + 1) * (cubeletLevelOfDetail + 2) / 2)
             
             for row in 0...cubeletLevelOfDetail {
                 for col in 0...row {
                     let theta = 0.5 * .pi * Scalar(row) / Scalar(cubeletLevelOfDetail)
                     let phi = (row == 0) ? 0 : (0.5 * .pi * Scalar(col) / Scalar(row))
 
-                    cubeletCornerVertices.append(cornerRadius * Vector3(1 - sin(theta) * sin(phi), 1 - cos(theta), 1 - sin(theta) * cos(phi)))
+                    cubeletCornerVertexData.append(cornerRadius * Vector3(1 - sin(theta) * sin(phi), 1 - cos(theta), 1 - sin(theta) * cos(phi)))
                 }
             }
         }
 
         // Case #2: Use sharp corners.
         else {
-            cubeletFaceVertices = [
+            cubeletFaceVertexData = [
                 length * Vertex(0, 0, 0),
                 length * Vertex(1, 0, 0),
                 length * Vertex(1, 1, 0),
                 length * Vertex(0, 1, 0)
             ]
 
-            cubeletEdgeVertices = [
+            cubeletEdgeVertexData = [
                 length * Vertex(0, 0, 0),
                 length * Vertex(1, 0, 0)
             ]
 
-            cubeletCornerVertices = [
+            cubeletCornerVertexData = [
                 length * Vertex(0, 0, 0)
             ]
         }
@@ -153,8 +153,8 @@ class RubiksCubeRenderer {
 
         // Case #1: Use rounded corners.
         if stickerLevelOfDetail > 0 {
-            stickerVertices.removeAll()
-            stickerVertices.reserveCapacity(4 * (stickerLevelOfDetail + 1))
+            stickerVertexData.removeAll()
+            stickerVertexData.reserveCapacity(4 * (stickerLevelOfDetail + 1))
             
             // Bottom-left corner
             for i in 0...stickerLevelOfDetail {
@@ -162,7 +162,7 @@ class RubiksCubeRenderer {
                 let cs = cos(theta)
                 let sn = sin(theta)
 
-                stickerVertices.append(base + length * Vertex(0, 0, 0) + radius * Vertex(1-cs, 1-sn, 0))
+                stickerVertexData.append(base + length * Vertex(0, 0, 0) + radius * Vertex(1-cs, 1-sn, 0))
             }
             
             // Bottom-right corner
@@ -171,7 +171,7 @@ class RubiksCubeRenderer {
                 let cs = cos(theta)
                 let sn = sin(theta)
 
-                stickerVertices.append(base + length * Vertex(1, 0, 0) + radius * Vertex(sn-1, 1-cs, 0))
+                stickerVertexData.append(base + length * Vertex(1, 0, 0) + radius * Vertex(sn-1, 1-cs, 0))
             }
             
             // Top-right corner
@@ -180,7 +180,7 @@ class RubiksCubeRenderer {
                 let cs = cos(theta)
                 let sn = sin(theta)
 
-                stickerVertices.append(base + length * Vertex(1, 1, 0) + radius * Vertex(cs-1, sn-1, 0))
+                stickerVertexData.append(base + length * Vertex(1, 1, 0) + radius * Vertex(cs-1, sn-1, 0))
             }
             
             // Top-left corner
@@ -189,13 +189,13 @@ class RubiksCubeRenderer {
                 let cs = cos(theta)
                 let sn = sin(theta)
 
-                stickerVertices.append(base + length * Vertex(0, 1, 0) + radius * Vertex(1-sn, cs-1, 0))
+                stickerVertexData.append(base + length * Vertex(0, 1, 0) + radius * Vertex(1-sn, cs-1, 0))
             }
         }
 
         // Case #2: Use sharp corners.
         else {
-            stickerVertices = [
+            stickerVertexData = [
                 base + length * Vertex(0, 0, 0),
                 base + length * Vertex(1, 0, 0),
                 base + length * Vertex(1, 1, 0),
@@ -519,7 +519,7 @@ class RubiksCubeRenderer {
 
         GL.beginQuads()
         
-        for vertex in cubeletFaceVertices {
+        for vertex in cubeletFaceVertexData {
             GL.addVertex(vertex)
         }
 
@@ -531,7 +531,7 @@ class RubiksCubeRenderer {
 
         GL.beginQuadStrip()
         
-        for vertex in cubeletEdgeVertices {
+        for vertex in cubeletEdgeVertexData {
             GL.addVertex(vertex)
         }
 
@@ -545,11 +545,11 @@ class RubiksCubeRenderer {
             GL.beginTriangleStrip()
 
             for col in 0...row {
-                GL.addVertex(cubeletCornerVertices[(row + 1) * (row + 2) / 2 + col])
-                GL.addVertex(cubeletCornerVertices[row * (row + 1) / 2 + col])
+                GL.addVertex(cubeletCornerVertexData[(row + 1) * (row + 2) / 2 + col])
+                GL.addVertex(cubeletCornerVertexData[row * (row + 1) / 2 + col])
             }
             
-            GL.addVertex(cubeletCornerVertices[(row + 1) * (row + 4) / 2])
+            GL.addVertex(cubeletCornerVertexData[(row + 1) * (row + 4) / 2])
 
             GL.endShape()
         }
@@ -560,7 +560,7 @@ class RubiksCubeRenderer {
 
         GL.beginPolygon()
 
-        for vertex in stickerVertices {
+        for vertex in stickerVertexData {
             GL.addVertex(vertex)
         }
 
