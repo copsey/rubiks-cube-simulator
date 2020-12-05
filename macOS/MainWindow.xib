@@ -365,10 +365,10 @@
         <customObject id="402-Gm-Nnj" customClass="PreferencesController" customModule="Rubik_s_Cube_Simulator" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundColorWell" destination="Sg1-pf-Bqd" id="FDe-VR-Jz3"/>
-                <outlet property="cubeletLevelOfDetailSlider" destination="LVK-Zi-5v8" id="VHU-DX-fgD"/>
+                <outlet property="cubeletLevelOfDetailSlider" destination="KMK-e0-gpo" id="r5z-6K-TGM"/>
                 <outlet property="defaultBackgroundColorButton" destination="WHs-hw-QEu" id="jXB-Oa-dXP"/>
                 <outlet property="mainViewController" destination="THS-xe-EfH" id="hnk-3r-KRV"/>
-                <outlet property="stickerLevelOfDetailSlider" destination="HJF-q1-0qA" id="K7r-5E-FK4"/>
+                <outlet property="stickerLevelOfDetailSlider" destination="ZJu-cd-KIN" id="whC-Gy-XoN"/>
             </connections>
         </customObject>
         <menu title="Main Menu" systemMenu="main" id="dRI-4v-HoA">
@@ -492,14 +492,6 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LVK-Zi-5v8">
-                        <rect key="frame" x="30" y="64" width="212" height="26"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="8" doubleValue="4" tickMarkPosition="above" numberOfTickMarks="9" allowsTickMarkValuesOnly="YES" sliderType="linear" id="b76-35-F9d"/>
-                        <connections>
-                            <action selector="setCubeletLevelOfDetail:" target="402-Gm-Nnj" id="tLz-bL-8Wt"/>
-                        </connections>
-                    </slider>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wz7-I8-VPg">
                         <rect key="frame" x="29" y="98" width="36" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -527,14 +519,6 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HJF-q1-0qA">
-                        <rect key="frame" x="30" y="18" width="212" height="26"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="8" doubleValue="4" tickMarkPosition="above" numberOfTickMarks="9" allowsTickMarkValuesOnly="YES" sliderType="linear" id="WMZ-eQ-BKi"/>
-                        <connections>
-                            <action selector="setStickerLevelOfDetail:" target="402-Gm-Nnj" id="G9Z-7t-dwF"/>
-                        </connections>
-                    </slider>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tqB-Qd-WiX">
                         <rect key="frame" x="266" y="70" width="59" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -581,9 +565,25 @@
                             <action selector="setBackgroundColor:" target="402-Gm-Nnj" id="wC6-u7-Fpd"/>
                         </connections>
                     </colorWell>
+                    <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KMK-e0-gpo">
+                        <rect key="frame" x="30" y="63" width="212" height="28"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="7" doubleValue="3" tickMarkPosition="above" numberOfTickMarks="8" allowsTickMarkValuesOnly="YES" sliderType="linear" id="PDT-rp-G5E"/>
+                        <connections>
+                            <action selector="setCubeletLevelOfDetail:" target="402-Gm-Nnj" id="0Qb-mX-Nj3"/>
+                        </connections>
+                    </slider>
+                    <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZJu-cd-KIN">
+                        <rect key="frame" x="30" y="17" width="212" height="28"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="7" doubleValue="3" tickMarkPosition="above" numberOfTickMarks="8" allowsTickMarkValuesOnly="YES" sliderType="linear" id="tbG-JU-IPy"/>
+                        <connections>
+                            <action selector="setStickerLevelOfDetail:" target="402-Gm-Nnj" id="0zk-jz-e2H"/>
+                        </connections>
+                    </slider>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="-547" y="129"/>
+            <point key="canvasLocation" x="-547" y="128.5"/>
         </window>
     </objects>
 </document>
