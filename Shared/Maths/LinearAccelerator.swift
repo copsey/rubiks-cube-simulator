@@ -20,14 +20,14 @@ struct LinearAccelerator {
     
     let totalDisplacement: Double // difference between start point and end point
     let totalDistance: Double     // total distance covered by the particle over its motion
-    let direction: Double    // direction of travel (either +1.0 or -1.0)
+    let direction: Double    // direction of travel (either +1 or -1)
     let peakSpeed: Double    // peak absolute change in position per unit of time
     let acceleration: Double // change in velocity per unit of time
     
     init(startPoint: Double, endPoint: Double, initialTime: Double, maxSpeed: Double, acceleration: Double) {
         self.totalDisplacement = endPoint - startPoint
         self.totalDistance = totalDisplacement.magnitude
-        self.direction = (endPoint > startPoint ? +1 : -1)
+        self.direction = endPoint > startPoint ? +1 : -1
         self.acceleration = acceleration
         
         // Case 1: the particle never reaches its maximum velocity, because the displacement
@@ -82,7 +82,8 @@ struct LinearAccelerator {
         }
     }
     
-    func position(atTime time: Double) -> Double {
+    /// Get the particle's position at the specified time.
+    func position(at time: Double) -> Double {
         if time < startTime {
             return startPoint
         } else if time < inflectTime1 {
@@ -102,7 +103,8 @@ struct LinearAccelerator {
         }
     }
     
-    func velocity(atTime time: Double) -> Double {
+    /// Get the particle's signed velocity at the specified time.
+    func velocity(at time: Double) -> Double {
         let speed: Double
         
         if time < startTime {
@@ -120,5 +122,16 @@ struct LinearAccelerator {
         }
         
         return speed * direction
+    }
+    
+    /// The total amount of time the particle spends in motion.
+    var totalDuration: Double {
+        endTime - startTime
+    }
+    
+    /// Returns `true` if the animation will have completed at the specified time.
+    /// Otherwise returns `false`.
+    func hasFinished(at time: Double) -> Bool {
+        time >= endTime
     }
 }

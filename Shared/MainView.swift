@@ -195,8 +195,7 @@ class MainView: NSOpenGLView {
     func finishCubeRotation() {
         if let cubeRotator = self.cubeRotator {
             let (_, endOrientation, _, _, _) = cubeRotator
-            
-            self.cubeOrientation = endOrientation
+            cubeOrientation = endOrientation
             self.cubeRotator = nil
         }
     }
@@ -221,49 +220,37 @@ class MainView: NSOpenGLView {
     }
     
     func finishLayerRotation() {
-        self.rubiksCubeRenderer.rotatedLayerAndAngle = nil
-        self.layerRotator = nil
+        layerRotator = nil
+        rubiksCubeRenderer.rotatedLayerAndAngle = nil
+        self.needsDisplay = true
     }
     
     func animateScene(usingTimer timer: Timer) {
         if let cubeRotator = self.cubeRotator {
-            self.needsDisplay = true
-            
             let (startOrientation, _, axis, animator, startDate) = cubeRotator
-            
-            // Calculate what the cube's orientation will be when the scene is rendered.
             let time = timer.fireDate.timeIntervalSince(startDate)
-            let angle = animator.position(atTime: time)
             
-            // Check if the animation has completed
-            let animationHasFinished = (angle == animator.endPoint)
-            if animationHasFinished {
-                self.finishCubeRotation()
+            if animator.hasFinished(at: time) {
+                finishCubeRotation()
             } else {
+                let angle = animator.position(at: time)
                 let axisAndAngle = AxisAngle<Double>(axis: axis, angle: angle)
                 let rotation = Quaternion<Double>(fromRotation: axisAndAngle)
-                let currentOrientation = rotation * startOrientation
-                self.cubeOrientation = currentOrientation
+                cubeOrientation = rotation * startOrientation
             }
         }
         
         if let layerRotator = self.layerRotator {
-            self.needsDisplay = true
-            
             let (layer, animator, startDate) = layerRotator
-            
-            // Calculate what angle the layer will be at when the scene is rendered.
             let time = timer.fireDate.timeIntervalSince(startDate)
-            let angle = animator.position(atTime: time)
             
-//            print("Angle is \(angle)")
-            
-            // Update the cube renderer, completing the animation if applicable.
-            let animationHasFinished = (angle == animator.endPoint)
-            if animationHasFinished {
-                self.finishLayerRotation()
+            if animator.hasFinished(at: time) {
+                finishLayerRotation()
             } else {
-                self.rubiksCubeRenderer.rotatedLayerAndAngle = (layer, angle)
+                let angle = animator.position(at: time)
+//                print("Layer angle is \(angle)")
+                rubiksCubeRenderer.rotatedLayerAndAngle = (layer, angle)
+                self.needsDisplay = true
             }
         }
     }
