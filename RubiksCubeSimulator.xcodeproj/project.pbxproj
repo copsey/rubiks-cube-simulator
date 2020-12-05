@@ -20,6 +20,7 @@
 		04872E0025724A7600EB8782 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04872DFF25724A7600EB8782 /* Color.swift */; };
 		048E27F22577BB1200DB8B70 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 048E27F02577BB1200DB8B70 /* MainWindow.xib */; };
 		048FE9F72579522D00FF8A07 /* PreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048FE9F62579522D00FF8A07 /* PreferencesController.swift */; };
+		048FEA04257ACB6600FF8A07 /* ControlPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048FEA03257ACB6600FF8A07 /* ControlPanelController.swift */; };
 		04DB8068257544830000E602 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DB8067257544830000E602 /* main.m */; };
 		F861E76114A9BD67005A5055 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F861E76014A9BD67005A5055 /* Cocoa.framework */; };
 		F861E77E14A9BD79005A5055 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F861E77D14A9BD79005A5055 /* OpenGL.framework */; };
@@ -41,6 +42,7 @@
 		048E27EF2577BB1200DB8B70 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		048E27F02577BB1200DB8B70 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		048FE9F62579522D00FF8A07 /* PreferencesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesController.swift; sourceTree = "<group>"; };
+		048FEA03257ACB6600FF8A07 /* ControlPanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelController.swift; sourceTree = "<group>"; };
 		04DB8067257544830000E602 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F861E75C14A9BD67005A5055 /* Rubik's Cube Simulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rubik's Cube Simulator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F861E76014A9BD67005A5055 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -141,6 +143,7 @@
 				040904192563B24C00AC67E1 /* RubiksCube.swift */,
 				04801BE1256E51F4005957BF /* MainView.swift */,
 				04801BE4256E5C8A005957BF /* MainViewController.swift */,
+				048FEA03257ACB6600FF8A07 /* ControlPanelController.swift */,
 				048FE9F62579522D00FF8A07 /* PreferencesController.swift */,
 				F86C99801CC3C01500249217 /* Images.xcassets */,
 				04DB8067257544830000E602 /* main.m */,
@@ -226,6 +229,7 @@
 				04872E0025724A7600EB8782 /* Color.swift in Sources */,
 				04801BE2256E51F4005957BF /* MainView.swift in Sources */,
 				047DA6AB2577BECD00D74389 /* Matrix4x4.swift in Sources */,
+				048FEA04257ACB6600FF8A07 /* ControlPanelController.swift in Sources */,
 				047E3E57256BB89900CD0E02 /* OpenGL.swift in Sources */,
 				04801BE5256E5C8A005957BF /* MainViewController.swift in Sources */,
 				04DB8068257544830000E602 /* main.m in Sources */,

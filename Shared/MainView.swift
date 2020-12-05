@@ -10,20 +10,31 @@ import OpenGL.GL
 
 class MainView: NSOpenGLView {
     var rubiksCube: RubiksCube {
-        get { self.rubiksCubeRenderer.rubiksCube }
-        set { self.rubiksCubeRenderer.rubiksCube = newValue }
+        rubiksCubeRenderer.rubiksCube
     }
     var rubiksCubeRenderer: RubiksCubeRenderer
     
-    var backgroundColor = defaultBackgroundColor
+    var backgroundColor = defaultBackgroundColor {
+        didSet {
+            self.needsDisplay = true
+        }
+    }
     static let defaultBackgroundColor = Color(red: 0.545098, green: 0.792157, blue: 0.968627)
     
-    var cubeDistance = defaultCubeDistance
+    var cubeDistance = defaultCubeDistance {
+        didSet {
+            self.needsDisplay = true
+        }
+    }
     static let defaultCubeDistance = 0.275 // measured in m
     static let minCubeDistance = 0.18      // ... , can result in clipping for large cubes
     static let maxCubeDistance = 0.43      // ...
     
-    var cubeOrientation = defaultCubeOrientation
+    var cubeOrientation = defaultCubeOrientation {
+        didSet {
+            self.needsDisplay = true
+        }
+    }
     static let defaultCubeOrientation = Quaternion<Double>(0.326247, -0.200024, -0.482900, -0.787630)
     
     var cubeRotator: (Quaternion<Double>, Quaternion<Double>, Vector3<Double>, LinearAccelerator, Date)? = nil
@@ -47,6 +58,12 @@ class MainView: NSOpenGLView {
 //        glEnable(GLenum(GL_LIGHTING))
 //        glEnable(GLenum(GL_LIGHT0))
 //        glPolygonMode(GLenum(GL_FRONT_AND_BACK), GLenum(GL_LINE))
+    }
+    
+    func replaceRubiksCube(with newRubiksCube: RubiksCube) {
+        finishLayerRotation()
+        rubiksCubeRenderer.rubiksCube = newRubiksCube
+        self.needsDisplay = true
     }
     
     func updateViewport() {
@@ -97,9 +114,9 @@ class MainView: NSOpenGLView {
         
         // Bring the viewpoint to its correct position in the scene.
         GL.resetModelviewMatrix()
-        let rotation = AxisAngle<GLdouble>(fromUnitQuaternion: self.cubeOrientation)
+        let rotation = AxisAngle<GLdouble>(fromUnitQuaternion: cubeOrientation)
         
-        GL.translate(x: 0, y: 0, z: -self.cubeDistance)
+        GL.translate(x: 0, y: 0, z: -cubeDistance)
         GL.rotate(by: rotation)
         
         // Draw the cube.

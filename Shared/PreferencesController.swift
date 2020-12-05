@@ -77,7 +77,6 @@ class PreferencesController: NSObject {
         // Update the main view.
         let view = self.mainViewController.view as! MainView
         view.backgroundColor = newColor
-        view.needsDisplay = true
     }
     
     @IBAction func resetBackgroundColorToDefault(_ sender: Any) {
@@ -91,7 +90,6 @@ class PreferencesController: NSObject {
         // Update the main view.
         let view = self.mainViewController.view as! MainView
         view.backgroundColor = newColor
-        view.needsDisplay = true
         
         // Update the preferences window.
         let newColorAsNSColor = NSColor(red: CGFloat(newColor.red),

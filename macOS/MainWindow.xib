@@ -5,26 +5,13 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="MainViewController" customModule="Decipher" customModuleProvider="target"/>
+        <customObject id="-2" userLabel="File's Owner" customClass="MainViewController" customModule="Rubik_s_Cube_Simulator" customModuleProvider="target"/>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <viewController id="THS-xe-EfH" customClass="MainViewController" customModule="Decipher" customModuleProvider="target">
+        <viewController id="THS-xe-EfH" customClass="MainViewController" customModule="Rubik_s_Cube_Simulator" customModuleProvider="target">
             <connections>
-                <outlet property="clearButton" destination="114-Md-MpK" id="IhT-IP-k0Z"/>
-                <outlet property="cubeLengthDropdown" destination="Y2A-0a-Q1g" id="79X-xe-M8d"/>
-                <outlet property="depthToRotateAtDropdown" destination="7CU-6w-VMS" id="rqc-b8-eVV"/>
-                <outlet property="faceToRotateDropdown" destination="xcw-Wz-rNk" id="11C-tQ-byM"/>
-                <outlet property="frontFaceDropdown" destination="LRI-zp-yh8" id="1JO-wm-BWv"/>
-                <outlet property="numberOfTurnsTextField" destination="FR8-nH-Z7k" id="WIe-ok-EHn"/>
-                <outlet property="orientButton" destination="5jH-mf-79L" id="bSK-Xn-FBB"/>
+                <outlet property="controlPanelController" destination="U9W-hT-xeo" id="1fC-j9-ltz"/>
                 <outlet property="preferencesController" destination="402-Gm-Nnj" id="PXJ-K0-ZZt"/>
-                <outlet property="resetButton" destination="29e-RU-PcV" id="2zy-LT-azn"/>
-                <outlet property="rotateButton" destination="Q4J-Ff-xye" id="4Xy-Hb-r8S"/>
-                <outlet property="scrambleButton" destination="J4S-us-Z2h" id="22O-o8-GN8"/>
-                <outlet property="selectedPositionLabel" destination="xlW-hn-gEM" id="YkG-V6-rhM"/>
-                <outlet property="stickerColorDropdown" destination="w06-17-NVS" id="Viy-EP-fdd"/>
-                <outlet property="stickerColorLabel" destination="lWf-JQ-CSH" id="uZI-PO-YTL"/>
-                <outlet property="topFaceDropdown" destination="X1V-8Z-VgY" id="HbJ-Wb-HPw"/>
                 <outlet property="view" destination="tIt-Ah-Bep" id="jg3-7A-Aao"/>
             </connections>
         </viewController>
@@ -38,7 +25,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="512" height="512"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <openGLView wantsLayer="YES" fixedFrame="YES" depthSize="16bit" samplingRate="8" useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" wantsBestResolutionOpenGLSurface="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tIt-Ah-Bep" customClass="MainView" customModule="Decipher" customModuleProvider="target">
+                    <openGLView wantsLayer="YES" fixedFrame="YES" depthSize="16bit" samplingRate="8" useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" wantsBestResolutionOpenGLSurface="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tIt-Ah-Bep" customClass="MainView" customModule="Rubik_s_Cube_Simulator" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="512" height="512"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </openGLView>
@@ -63,7 +50,7 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="rotateLayerOfRubiksCube:" target="THS-xe-EfH" id="ANQ-wm-a4L"/>
+                            <action selector="rotateLayerOfRubiksCube:" target="U9W-hT-xeo" id="0fh-pU-ahD"/>
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5jH-mf-79L">
@@ -74,7 +61,7 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="orientRubiksCube:" target="THS-xe-EfH" id="lEO-af-P09"/>
+                            <action selector="orientRubiksCube:" target="U9W-hT-xeo" id="fvP-Fh-ttb"/>
                         </connections>
                     </button>
                     <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xcw-Wz-rNk">
@@ -149,7 +136,7 @@
                             </menu>
                         </popUpButtonCell>
                         <connections>
-                            <action selector="chooseFrontFace:" target="THS-xe-EfH" id="nLR-Vc-h0K"/>
+                            <action selector="chooseFrontFace:" target="U9W-hT-xeo" id="yLC-pF-9sL"/>
                         </connections>
                     </popUpButton>
                     <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X1V-8Z-VgY">
@@ -182,7 +169,7 @@
                             </menu>
                         </popUpButtonCell>
                         <connections>
-                            <action selector="chooseTopFace:" target="THS-xe-EfH" id="Hn3-UQ-qM4"/>
+                            <action selector="chooseTopFace:" target="U9W-hT-xeo" id="kcU-7L-Gal"/>
                         </connections>
                     </popUpButton>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JEo-bo-cTH">
@@ -242,7 +229,7 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="scrambleRubiksCube:" target="THS-xe-EfH" id="jaT-zK-Qlj"/>
+                            <action selector="scrambleRubiksCube:" target="U9W-hT-xeo" id="vXU-wJ-eJB"/>
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="29e-RU-PcV">
@@ -253,7 +240,7 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="resetRubiksCube:" target="THS-xe-EfH" id="5k9-L0-eVD"/>
+                            <action selector="resetRubiksCube:" target="U9W-hT-xeo" id="WbO-Rp-rGZ"/>
                         </connections>
                     </button>
                     <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w06-17-NVS">
@@ -274,7 +261,7 @@
                             </menu>
                         </popUpButtonCell>
                         <connections>
-                            <action selector="updateStickerColorOfRubiksCube:" target="THS-xe-EfH" id="2Nl-r3-dAv"/>
+                            <action selector="selectValueAtSelectedPosition:" target="U9W-hT-xeo" id="Xo7-kE-wrV"/>
                         </connections>
                     </popUpButton>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xlW-hn-gEM">
@@ -305,7 +292,7 @@
                             </menu>
                         </popUpButtonCell>
                         <connections>
-                            <action selector="changeLengthOfRubiksCube:" target="THS-xe-EfH" id="puw-G1-5ld"/>
+                            <action selector="changeSizeOfRubiksCube:" target="U9W-hT-xeo" id="Ltf-KK-cH9"/>
                         </connections>
                     </popUpButton>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SxU-tB-18H">
@@ -349,13 +336,41 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="clearRubiksCube:" target="THS-xe-EfH" id="auR-rj-AYG"/>
+                            <action selector="clearRubiksCube:" target="U9W-hT-xeo" id="Kou-wP-hiV"/>
                         </connections>
                     </button>
                 </subviews>
             </view>
             <point key="canvasLocation" x="470" y="123"/>
         </window>
+        <customObject id="U9W-hT-xeo" customClass="ControlPanelController" customModule="Rubik_s_Cube_Simulator" customModuleProvider="target">
+            <connections>
+                <outlet property="clearButton" destination="114-Md-MpK" id="OX8-7N-hiH"/>
+                <outlet property="cubeSizeDropdown" destination="Y2A-0a-Q1g" id="91p-gz-rCr"/>
+                <outlet property="depthToRotateAtDropdown" destination="7CU-6w-VMS" id="3zF-FU-omQ"/>
+                <outlet property="faceToRotateDropdown" destination="xcw-Wz-rNk" id="LR0-N9-KOr"/>
+                <outlet property="frontFaceDropdown" destination="LRI-zp-yh8" id="ktL-xW-0tN"/>
+                <outlet property="mainViewController" destination="THS-xe-EfH" id="bGQ-XR-zTW"/>
+                <outlet property="numberOfTurnsTextField" destination="FR8-nH-Z7k" id="8nl-HT-50a"/>
+                <outlet property="orientButton" destination="5jH-mf-79L" id="QLn-oO-xXL"/>
+                <outlet property="resetButton" destination="29e-RU-PcV" id="Y2z-lc-sDG"/>
+                <outlet property="rotateButton" destination="Q4J-Ff-xye" id="Agq-Qh-Vyo"/>
+                <outlet property="scrambleButton" destination="J4S-us-Z2h" id="J7p-Xw-u64"/>
+                <outlet property="selectedPositionText" destination="xlW-hn-gEM" id="mAH-ke-YP6"/>
+                <outlet property="topFaceDropdown" destination="X1V-8Z-VgY" id="2fo-tj-xRk"/>
+                <outlet property="valueAtSelectedPositionDropdown" destination="w06-17-NVS" id="khG-QA-DKP"/>
+                <outlet property="valueAtSelectedPositionDropdownLabel" destination="lWf-JQ-CSH" id="fHv-zE-Q1Q"/>
+            </connections>
+        </customObject>
+        <customObject id="402-Gm-Nnj" customClass="PreferencesController" customModule="Rubik_s_Cube_Simulator" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundColorWell" destination="Sg1-pf-Bqd" id="FDe-VR-Jz3"/>
+                <outlet property="cubeletLevelOfDetailSlider" destination="LVK-Zi-5v8" id="VHU-DX-fgD"/>
+                <outlet property="defaultBackgroundColorButton" destination="WHs-hw-QEu" id="jXB-Oa-dXP"/>
+                <outlet property="mainViewController" destination="THS-xe-EfH" id="hnk-3r-KRV"/>
+                <outlet property="stickerLevelOfDetailSlider" destination="HJF-q1-0qA" id="K7r-5E-FK4"/>
+            </connections>
+        </customObject>
         <menu title="Main Menu" systemMenu="main" id="dRI-4v-HoA">
             <items>
                 <menuItem title="Rubik's Cube Simulator" id="XdA-lA-6Y0">
@@ -450,15 +465,6 @@
             </items>
             <point key="canvasLocation" x="21" y="-229"/>
         </menu>
-        <customObject id="402-Gm-Nnj" customClass="PreferencesController" customModule="Decipher" customModuleProvider="target">
-            <connections>
-                <outlet property="backgroundColorWell" destination="Sg1-pf-Bqd" id="FDe-VR-Jz3"/>
-                <outlet property="cubeletLevelOfDetailSlider" destination="LVK-Zi-5v8" id="VHU-DX-fgD"/>
-                <outlet property="defaultBackgroundColorButton" destination="WHs-hw-QEu" id="jXB-Oa-dXP"/>
-                <outlet property="mainViewController" destination="THS-xe-EfH" id="hnk-3r-KRV"/>
-                <outlet property="stickerLevelOfDetailSlider" destination="HJF-q1-0qA" id="K7r-5E-FK4"/>
-            </connections>
-        </customObject>
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="TfV-Wd-5fG">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES"/>
