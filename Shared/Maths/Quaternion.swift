@@ -157,8 +157,14 @@ extension Quaternion {
         Quaternion(-q.w, -q.x, -q.y, -q.z)
     }
     
+    mutating func conjugate() {
+        x.negate()
+        y.negate()
+        z.negate()
+    }
+    
     @inlinable
-    var conjugate: Quaternion {
+    var conjugated: Quaternion {
         Quaternion(w, -x, -y, -z)
     }
 }
@@ -210,7 +216,7 @@ extension Quaternion {
 extension Quaternion where Scalar: FloatingPoint {
     @inlinable
     var reciprocal: Quaternion {
-        conjugate / magnitudeSquared
+        self.conjugated / magnitudeSquared
     }
     
     @inlinable

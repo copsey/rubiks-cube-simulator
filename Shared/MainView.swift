@@ -140,7 +140,7 @@ class MainView: NSOpenGLView {
         // Find the rotation needed to reach the new orientation, represented as a quaternion.
         let startOrientation = self.cubeOrientation
         let endOrientation = newOrientation.direction
-        var rotationAsQuaternion = endOrientation * startOrientation.conjugate
+        var rotationAsQuaternion = endOrientation * startOrientation.conjugated
         
         // Reverse the direction of rotation if this would reduce the total distance.
         if rotationAsQuaternion.real < 0 {
@@ -190,7 +190,7 @@ class MainView: NSOpenGLView {
         let newOrientation = Quaternion(fromOrientation: (xDirection, yDirection, zDirection))
         
         // TODO: Investigate why conjugation is needed here.
-        self.setUpCubeRotation(toOrientation: newOrientation.conjugate)
+        self.setUpCubeRotation(toOrientation: newOrientation.conjugated)
     }
     
     func finishCubeRotation() {
