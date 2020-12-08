@@ -11,31 +11,34 @@ struct Vector3<Scalar: AdditiveArithmetic> {
     /// The three coordinates of the vector in the order `(self.x, self.y, self.z)`.
     var data: (Scalar, Scalar, Scalar)
     
+    @inlinable
     var x: Scalar {
-        get { self.data.0 }
-        set { self.data.0 = newValue }
+        get { data.0 }
+        set { data.0 = newValue }
     }
     
+    @inlinable
     var y: Scalar {
-        get { self.data.1 }
-        set { self.data.1 = newValue }
+        get { data.1 }
+        set { data.1 = newValue }
     }
     
+    @inlinable
     var z: Scalar {
-        get { self.data.2 }
-        set { self.data.2 = newValue }
+        get { data.2 }
+        set { data.2 = newValue }
     }
     
     init() {
-        self.data.0 = .zero
-        self.data.1 = .zero
-        self.data.2 = .zero
+        data.0 = .zero
+        data.1 = .zero
+        data.2 = .zero
     }
     
     init(_ x: Scalar, _ y: Scalar, _ z: Scalar) {
-        self.data.0 = x
-        self.data.1 = y
-        self.data.2 = z
+        data.0 = x
+        data.1 = y
+        data.2 = z
     }
     
     init(_ data: (Scalar, Scalar, Scalar)) {
