@@ -15,23 +15,25 @@ struct Quaternion<Scalar: SignedNumeric> {
     var z: Scalar
     
     /// The real part.
+    @inlinable
     var real: Scalar {
-        get { self.w }
-        set { self.w = newValue }
+        get { w }
+        set { w = newValue }
     }
     
     /// The imaginary parts as a triple.
+    @inlinable
     var imag: (Scalar, Scalar, Scalar) {
-        get { (self.x, self.y, self.z) }
-        set { self.x = newValue.0; self.y = newValue.1; self.z = newValue.2 }
+        get { (x, y, z) }
+        set { x = newValue.0; y = newValue.1; z = newValue.2 }
     }
     
     /// Construct the zero quaternion.
     init() {
-        self.w = 0
-        self.x = 0
-        self.y = 0
-        self.z = 0
+        w = 0
+        x = 0
+        y = 0
+        z = 0
     }
     
     init(_ w: Scalar, _ x: Scalar, _ y: Scalar, _ z: Scalar) {
@@ -43,34 +45,40 @@ struct Quaternion<Scalar: SignedNumeric> {
     
     /// Construct a real quaternion from the given value.
     init(_ real: Scalar) {
-        self.w = real
-        self.x = 0
-        self.y = 0
-        self.z = 0
+        w = real
+        x = 0
+        y = 0
+        z = 0
     }
     
     /// Construct a pure quaternion from the given triple.
     init(imag: (Scalar, Scalar, Scalar)) {
-        self.w = 0
-        self.x = imag.0
-        self.y = imag.1
-        self.z = imag.2
+        w = 0
+        x = imag.0
+        y = imag.1
+        z = imag.2
     }
     
     /// Construct a quaternion from the given real and imaginary values.
     init(real: Scalar, imag: (Scalar, Scalar, Scalar)) {
-        self.w = real
-        self.x = imag.0
-        self.y = imag.1
-        self.z = imag.2
+        w = real
+        x = imag.0
+        y = imag.1
+        z = imag.2
     }
     
+    @inlinable
     static var i: Quaternion { .init(0, 1, 0, 0) }
+    
+    @inlinable
     static var j: Quaternion { .init(0, 0, 1, 0) }
+    
+    @inlinable
     static var k: Quaternion { .init(0, 0, 0, 1) }
 }
 
 extension Quaternion: Equatable {
+    @inlinable
     static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.w == rhs.w && lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z
     }
@@ -78,40 +86,43 @@ extension Quaternion: Equatable {
 
 extension Quaternion: Hashable where Scalar: Hashable {
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self.w)
-        hasher.combine(self.x)
-        hasher.combine(self.y)
-        hasher.combine(self.z)
+        hasher.combine(w)
+        hasher.combine(x)
+        hasher.combine(y)
+        hasher.combine(z)
     }
 }
 
 extension Quaternion: ExpressibleByIntegerLiteral {
     init(integerLiteral w: Scalar.IntegerLiteralType) {
         self.w = Scalar(integerLiteral: w)
-        self.x = 0
-        self.y = 0
-        self.z = 0
+        x = 0
+        y = 0
+        z = 0
     }
 }
 
 extension Quaternion: ExpressibleByFloatLiteral where Scalar: ExpressibleByFloatLiteral {
     init(floatLiteral w: Scalar.FloatLiteralType) {
         self.w = Scalar(floatLiteral: w)
-        self.x = 0
-        self.y = 0
-        self.z = 0
+        x = 0
+        y = 0
+        z = 0
     }
 }
 
 extension Quaternion: CustomStringConvertible {
+    @inlinable
     var description: String {
-        "\(self.w) + \(self.x) i + \(self.y) j + \(self.z) k"
+        "\(w) + \(x) i + \(y) j + \(z) k"
     }
 }
 
 extension Quaternion: AdditiveArithmetic {
+    @inlinable
     static var zero: Quaternion { 0 }
     
+    @inlinable
     static prefix func + (operand: Quaternion) -> Quaternion {
         operand
     }
@@ -135,22 +146,25 @@ extension Quaternion: AdditiveArithmetic {
 
 extension Quaternion {
     mutating func negate() {
-        self.w.negate()
-        self.x.negate()
-        self.y.negate()
-        self.z.negate()
+        w.negate()
+        x.negate()
+        y.negate()
+        z.negate()
     }
     
+    @inlinable
     static prefix func - (q: Quaternion) -> Quaternion {
         Quaternion(-q.w, -q.x, -q.y, -q.z)
     }
     
+    @inlinable
     var conjugate: Quaternion {
-        Quaternion(self.w, -self.x, -self.y, -self.z)
+        Quaternion(w, -x, -y, -z)
     }
 }
 
 extension Quaternion {
+    @inlinable
     static var one: Quaternion { 1 }
     
     static func * (lhs: Quaternion, rhs: Quaternion) -> Quaternion {
@@ -185,31 +199,35 @@ extension Quaternion {
 extension Quaternion {
     /// The squared length of `self`.
     var magnitudeSquared: Scalar {
-        let rw = self.w * self.w
-        let rx = self.x * self.x
-        let ry = self.y * self.y
-        let rz = self.z * self.z
+        let rw = w * w
+        let rx = x * x
+        let ry = y * y
+        let rz = z * z
         return rw + rx + ry + rz
     }
 }
 
 extension Quaternion where Scalar: FloatingPoint {
+    @inlinable
     var reciprocal: Quaternion {
-        self.conjugate / self.magnitudeSquared
+        conjugate / magnitudeSquared
     }
     
+    @inlinable
     static func / (lhs: Quaternion, rhs: Quaternion) -> Quaternion {
         lhs * rhs.reciprocal
     }
     
     /// The length of `self`.
+    @inlinable
     var magnitude: Scalar {
-        sqrt(self.magnitudeSquared)
+        sqrt(magnitudeSquared)
     }
     
     /// The unit quaternion in the same direction as `self`.
+    @inlinable
     var direction: Quaternion {
-        self / self.magnitude
+        self / magnitude
     }
 }
 
@@ -289,6 +307,7 @@ extension Quaternion where Scalar: FloatingPoint {
         return Quaternion(w, x, y, z)
     }
     
+    @inlinable
     static func / (real: Scalar, quaternion: Quaternion) -> Quaternion {
         real * quaternion.reciprocal
     }
