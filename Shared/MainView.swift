@@ -9,9 +9,7 @@ import Cocoa
 import OpenGL.GL
 
 class MainView: NSOpenGLView {
-    var rubiksCube: RubiksCube {
-        rubiksCubeRenderer.rubiksCube
-    }
+    var rubiksCube: RubiksCube { rubiksCubeRenderer.rubiksCube }
     var rubiksCubeRenderer: RubiksCubeRenderer
     
     var backgroundColor = defaultBackgroundColor {
@@ -43,7 +41,7 @@ class MainView: NSOpenGLView {
     
     required init?(coder: NSCoder) {
         // Display a solved 3x3 cube by default.
-        self.rubiksCubeRenderer = RubiksCubeRenderer(rubiksCube: .solvedRubiksCube(size: 3))
+        rubiksCubeRenderer = RubiksCubeRenderer(rubiksCube: .solvedRubiksCube(size: 3))
         
         super.init(coder: coder)
         
@@ -106,22 +104,21 @@ class MainView: NSOpenGLView {
         super.draw(dirtyRect)
         
         // Set the scene's viewport and perspective.
-        self.updateViewport()
-        self.updatePerspective()
+        updateViewport()
+        updatePerspective()
         
         // Clear the buffers.
-        GL.clearColor = self.backgroundColor
+        GL.clearColor = backgroundColor
         GL.clear()
         
         // Bring the viewpoint to its correct position in the scene.
-        GL.resetMatrix()
         let rotation = AxisAngle<GLdouble>(fromUnitQuaternion: cubeOrientation)
-        
+        GL.resetMatrix()
         GL.translate(x: 0, y: 0, z: -cubeDistance)
         GL.rotate(by: rotation)
         
         // Draw the cube.
-        self.rubiksCubeRenderer.render()
+        rubiksCubeRenderer.render()
         
         // Finish rendering the scene.
         GL.flush()
@@ -130,15 +127,10 @@ class MainView: NSOpenGLView {
     
     func setUpCubeRotation(toOrientation newOrientation: Quaternion<Double>) {
         // Complete any animation in progress.
-        if let cubeRotator = self.cubeRotator {
-            let endOrientation = cubeRotator.1
-            
-            self.cubeOrientation = endOrientation
-            self.cubeRotator = nil
-        }
+        finishCubeRotation()
         
-        // Find the rotation needed to reach the new orientation, represented as a quaternion.
-        let startOrientation = self.cubeOrientation
+        // Find the rotation needed to reach the new orientation, represented by a quaternion.
+        let startOrientation = cubeOrientation
         let endOrientation = newOrientation.direction
         var rotationAsQuaternion = endOrientation * startOrientation.conjugated
         
@@ -159,7 +151,7 @@ class MainView: NSOpenGLView {
                                          maxSpeed: maxSpeed, acceleration: acceleration)
         let timeNow = Date()
         
-        self.cubeRotator = (startOrientation, endOrientation, axis, animator, timeNow)
+        cubeRotator = (startOrientation, endOrientation, axis, animator, timeNow)
     }
     
     func setUpCubeRotation(toFrontFace frontFace: RubiksCube.Face, topFace: RubiksCube.Face) {
@@ -190,7 +182,7 @@ class MainView: NSOpenGLView {
         let newOrientation = Quaternion(fromOrientation: (xDirection, yDirection, zDirection))
         
         // TODO: Investigate why conjugation is needed here.
-        self.setUpCubeRotation(toOrientation: newOrientation.conjugated)
+        setUpCubeRotation(toOrientation: newOrientation.conjugated)
     }
     
     func finishCubeRotation() {
@@ -202,7 +194,7 @@ class MainView: NSOpenGLView {
     
     func setUpLayerRotation(layer: RubiksCube.Layer, turns: Int) {
         // Immediately apply the turns to the underlying Rubik's Cube.
-        self.rubiksCube.turn(layer: layer, count: turns)
+        rubiksCube.turn(layer: layer, count: turns)
         
         // Graphically rotate the layer in the _opposite_ direction. This makes
         // it appear as though the Rubik's Cube has not been turned yet.
@@ -216,7 +208,7 @@ class MainView: NSOpenGLView {
                                          maxSpeed: maxSpeed, acceleration: acceleration)
         let timeNow = Date()
         
-        self.layerRotator = (layer, animator, timeNow)
+        layerRotator = (layer, animator, timeNow)
     }
     
     func finishLayerRotation() {
