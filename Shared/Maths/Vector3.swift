@@ -54,9 +54,9 @@ extension Vector3: Equatable {
 
 extension Vector3: Hashable where Scalar: Hashable {
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self.x)
-        hasher.combine(self.y)
-        hasher.combine(self.z)
+        hasher.combine(x)
+        hasher.combine(y)
+        hasher.combine(z)
     }
 }
 
@@ -79,7 +79,7 @@ extension Vector3 where Scalar: ExpressibleByIntegerLiteral {
 
 extension Vector3: CustomStringConvertible {
     var description: String {
-        "(\(self.x), \(self.y), \(self.z))"
+        "(\(x), \(y), \(z))"
     }
 }
 
@@ -157,9 +157,9 @@ extension Vector3 where Scalar: Numeric {
 
 extension Vector3 where Scalar: SignedNumeric {
     mutating func negate() {
-        self.x.negate()
-        self.y.negate()
-        self.z.negate()
+        x.negate()
+        y.negate()
+        z.negate()
     }
     
     static prefix func - (vector: Vector3) -> Vector3 {
@@ -182,7 +182,7 @@ extension Vector3 where Scalar: FloatingPoint {
     
     /// The length of the vector.
     var magnitude: Scalar {
-        sqrt(self.magnitudeSquared)
+        sqrt(magnitudeSquared)
     }
     
     /// The unit vector in the same direction as `self`.
@@ -215,6 +215,6 @@ extension Vector3 where Scalar: FloatingPoint {
     
     /// Indicates if all of the vector's coordinates are finite.
     var isFinite: Bool {
-        self.x.isFinite && self.y.isFinite && self.z.isFinite
+        x.isFinite && y.isFinite && z.isFinite
     }
 }
