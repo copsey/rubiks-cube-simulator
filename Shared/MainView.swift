@@ -114,7 +114,7 @@ class MainView: NSOpenGLView {
         GL.clear()
         
         // Bring the viewpoint to its correct position in the scene.
-        GL.resetModelviewMatrix()
+        GL.resetMatrix()
         let rotation = AxisAngle<GLdouble>(fromUnitQuaternion: cubeOrientation)
         
         GL.translate(x: 0, y: 0, z: -cubeDistance)

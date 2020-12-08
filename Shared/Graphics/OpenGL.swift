@@ -114,6 +114,10 @@ struct GL {
         glPopMatrix()
     }
     
+    static func resetMatrix() {
+        glLoadIdentity()
+    }
+    
     static func multiplyMatrix(by matrix: Matrix4x4<Scalar>) {
         withUnsafePointer(to: matrix) {
             glMultTransposeMatrixd(UnsafeRawPointer($0).assumingMemoryBound(to: GLdouble.self))
@@ -140,10 +144,6 @@ struct GL {
         glFrustum(left, right, bottom, top, near, far)
 
         glMatrixMode(GLenum(GL_MODELVIEW))
-    }
-    
-    static func resetModelviewMatrix() {
-        glLoadIdentity()
     }
     
     static func unproject(_ viewportPoint: Vector) -> Vector {
