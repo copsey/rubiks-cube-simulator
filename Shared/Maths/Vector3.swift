@@ -44,6 +44,32 @@ struct Vector3<Scalar: AdditiveArithmetic> {
     init(_ data: (Scalar, Scalar, Scalar)) {
         self.data = data
     }
+    
+    subscript(_ index: Int) -> Scalar {
+        get {
+            switch index {
+            case 0:     return data.0
+            case 1:     return data.1
+            case 2:     return data.2
+            default:    Vector3._indexPreconditionFailure()
+            }
+        }
+        
+        set {
+            switch index {
+            case 0:     data.0 = newValue
+            case 1:     data.1 = newValue
+            case 2:     data.2 = newValue
+            default:    Vector3._indexPreconditionFailure()
+            }
+        }
+    }
+}
+
+extension Vector3 {
+    private static func _indexPreconditionFailure() -> Never {
+        preconditionFailure("Index must be 0, 1 or 2")
+    }
 }
 
 extension Vector3: Equatable {
