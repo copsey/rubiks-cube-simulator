@@ -21,7 +21,9 @@ class ControlPanelController: NSObject {
     
     var faceToRotate: RubiksCube.Face? {
         if let tag = faceToRotateDropdown.selectedItem?.tag {
-            return RubiksCube.Face(rawValue: tag)!
+            let face = RubiksCube.Face(rawValue: tag)
+            assert(face != nil, "Could not determine face to rotate from user selection")
+            return face!
         }
         return nil
     }
@@ -36,14 +38,18 @@ class ControlPanelController: NSObject {
     
     var frontFace: RubiksCube.Face? {
         if let tag = frontFaceDropdown.selectedItem?.tag {
-            return RubiksCube.Face(rawValue: tag)!
+            let face = RubiksCube.Face(rawValue: tag)
+            assert(face != nil, "Could not determine front face from user selection")
+            return face!
         }
         return nil
     }
     
     var topFace: RubiksCube.Face? {
         if let tag = topFaceDropdown.selectedItem?.tag {
-            return RubiksCube.Face(rawValue: tag)!
+            let face = RubiksCube.Face(rawValue: tag)
+            assert(face != nil, "Could not determine top face from user selection")
+            return face!
         }
         return nil
     }
