@@ -197,7 +197,7 @@ extension Vector3 where Scalar: FloatingPoint {
         if magnitude.isZero {
             return Vector3(.nan, .nan, .nan)
         } else if magnitude.isFinite {
-            return self / self.magnitude
+            return self / magnitude
         } else if magnitude.isInfinite {
             let x: Scalar = (self.x == .infinity) ? +1 : (self.x == -.infinity) ? -1 : 0
             let y: Scalar = (self.y == .infinity) ? +1 : (self.y == -.infinity) ? -1 : 0
