@@ -49,7 +49,7 @@ class MainViewController: NSViewController {
         
         // Clear the selected position if the mouse wasn't clicked on the cube.
         
-        let boundary = view.rubiksCubeRenderer.cubeLength * 0.51
+        let boundary = (view.rubiksCubeRenderer.cubeLength + view.rubiksCubeRenderer.stickerDepth) * 0.51
         if abs(sceneLocation.x) > boundary || abs(sceneLocation.y) > boundary || abs(sceneLocation.z) > boundary {
             controlPanelController.selectedPosition = nil
 //            print("Cleared the selected position")
