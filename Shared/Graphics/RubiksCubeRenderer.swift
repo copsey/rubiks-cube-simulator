@@ -226,41 +226,6 @@ class RubiksCubeRenderer {
 
     func render() {
         GL.pushMatrix()
-
-        /* TODO: Draw the core of the cube */
-        /* (i.e. draw enough central cubelets to fill in the whole of the middle.) */
-
-        //   NSColor * cubeColor = self.cubeColor;
-        //   glColor3f(cubeColor.redComponent, cubeColor.greenComponent, cubeColor.blueComponent);
-        //
-        //   glBegin(GL_QUAD_STRIP);
-        //
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[0]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[1]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[2]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[3]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[4]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[5]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[6]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[7]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[0]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[1]);
-        //
-        //   glEnd();
-        //
-        //   glBegin(GL_QUADS);
-        //
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[0]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[2]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[4]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[6]);
-        //
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[1]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[3]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[5]);
-        //   glVertex3dv(rubiksCubeCentralCubeletVertices[7]);
-        //
-        //   glEnd();
         
         // Bring the origin to the corner of the first face.
         GL.translate(by: 0.5 * self.cubeLength * Vector3(-1, -1, 1))
