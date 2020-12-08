@@ -52,7 +52,7 @@ class RubiksCubeRenderer {
     private var stickerVertexDrawingOrder: [(Int, Int, Int)] = []
     
     /// Layer of the cube being rotated, if any, along with the angle measured in radians.
-    var rotatedLayerAndAngle: (RubiksCube.Layer, Scalar)? = nil
+    var rotatedLayerAndAngle: (layer: RubiksCube.Layer, angle: Scalar)? = nil
     
     /// Color used to render the cube.
     var cubeColor = defaultCubeColor
@@ -244,10 +244,10 @@ class RubiksCubeRenderer {
     private func renderCubeWithRotatedLayer() {
         let n = rubiksCube.size
         
-        let rotatedLayer = self.rotatedLayerAndAngle!.0
+        let rotatedLayer = self.rotatedLayerAndAngle!.layer
         let rotatedFace = rotatedLayer.face
         let oppositeFace = rotatedLayer.oppositeFace
-        let angle = self.rotatedLayerAndAngle!.1
+        let angle = self.rotatedLayerAndAngle!.angle
         
         let cubeLength = self.cubeLength
         let cubeletLength = self.cubeletLength
