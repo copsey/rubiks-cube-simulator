@@ -1,6 +1,5 @@
 //
 //  PreferencesController.swift
-//  Decipher
 //
 //  Created by Jack Copsey on 03/12/2020.
 //

@@ -1,6 +1,5 @@
 //
 //  ControlPanelController.swift
-//  RubiksCubeSimulator
 //
 //  Created by Jack Copsey on 04/12/2020.
 //

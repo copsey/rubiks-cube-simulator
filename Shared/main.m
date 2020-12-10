@@ -1,9 +1,7 @@
 //
 //  main.m
-//  Decipher
 //
 //  Created by Jack Copsey on 27/12/2011.
-//  Copyright (c) 2011 Spawn Studios. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

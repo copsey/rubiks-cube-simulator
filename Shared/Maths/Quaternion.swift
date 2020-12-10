@@ -1,6 +1,5 @@
 //
 //  Quaternion.swift
-//  Decipher
 //
 //  Created by Jack Copsey on 18/11/2020.
 //

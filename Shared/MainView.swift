@@ -1,6 +1,5 @@
 //
 //  MainView.swift
-//  Decipher
 //
 //  Created by Jack Copsey on 25/11/2020.
 //

@@ -1,6 +1,5 @@
 //
 //  Matrix4x4.swift
-//  Decipher
 //
 //  Created by Jack Copsey on 02/12/2020.
 //

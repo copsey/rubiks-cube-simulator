@@ -1,6 +1,5 @@
 //
 //  OpenGL.swift
-//  Decipher
 //
 //  Created by Jack Copsey on 23/11/2020.
 //

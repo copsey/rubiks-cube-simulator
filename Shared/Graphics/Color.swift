@@ -1,6 +1,5 @@
 //
 //  Color.swift
-//  Decipher
 //
 //  Created by Jack Copsey on 28/11/2020.
 //

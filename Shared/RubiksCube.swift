@@ -1,6 +1,5 @@
 //
 //  RubiksCube.swift
-//  Decipher
 //
 //  Created by Jack Copsey on 17/11/2020.
 //
