@@ -114,11 +114,12 @@ class RubiksCubeRenderer {
             cubeletCornerVertexData.reserveCapacity((cubeletLevelOfDetail + 1) * (cubeletLevelOfDetail + 2) / 2)
             
             for row in 0...cubeletLevelOfDetail {
-                for col in 0...row {
-                    let theta = 0.5 * .pi * Scalar(row) / Scalar(cubeletLevelOfDetail)
-                    let phi = (row == 0) ? 0 : (0.5 * .pi * Scalar(col) / Scalar(row))
-
-                    cubeletCornerVertexData.append(cornerRadius * Vector3(1 - sin(theta) * sin(phi), 1 - cos(theta), 1 - sin(theta) * cos(phi)))
+                for column in 0...row {
+                    let s = Scalar(row) / Scalar(cubeletLevelOfDetail)
+                    let t = (row == 0) ? 0 : (Scalar(column) / Scalar(row))
+                    
+                    let pointOnSphere = Vertex(s * (1-t), s * t, 1-s).direction
+                    cubeletCornerVertexData.append(radius * (Vertex(1, 1, 1) - pointOnSphere))
                 }
             }
         }
