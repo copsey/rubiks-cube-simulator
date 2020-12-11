@@ -366,7 +366,6 @@
             <connections>
                 <outlet property="backgroundColorWell" destination="Sg1-pf-Bqd" id="FDe-VR-Jz3"/>
                 <outlet property="cubeletLevelOfDetailSlider" destination="KMK-e0-gpo" id="r5z-6K-TGM"/>
-                <outlet property="defaultBackgroundColorButton" destination="WHs-hw-QEu" id="jXB-Oa-dXP"/>
                 <outlet property="mainViewController" destination="THS-xe-EfH" id="hnk-3r-KRV"/>
                 <outlet property="renderAsOutlinesCheckbox" destination="wrM-W0-VHs" id="JxM-rg-0ms"/>
                 <outlet property="stickerLevelOfDetailSlider" destination="ZJu-cd-KIN" id="whC-Gy-XoN"/>
@@ -590,7 +589,7 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="setRenderAsOutlines:" target="402-Gm-Nnj" id="YJD-Fc-bM1"/>
+                            <action selector="setPolygonMode:" target="402-Gm-Nnj" id="vbJ-0D-UkU"/>
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6sD-i3-hns">

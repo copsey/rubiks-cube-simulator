@@ -7,11 +7,51 @@
 import Cocoa
 
 class PreferencesController: NSObject {
-    // Stored properties
+    @IBOutlet weak var mainViewController: MainViewController!
     
-    var backgroundColor: Color
-    var cubeletLevelOfDetail: Int
-    var stickerLevelOfDetail: Int
+    var backgroundColor: Color {
+        didSet {
+            // Update the user defaults.
+            let backgroundColorAsDictionary = ["red": backgroundColor.red,
+                                               "green": backgroundColor.green,
+                                               "blue": backgroundColor.blue]
+            UserDefaults.standard.set(backgroundColorAsDictionary, forKey: "backgroundColor")
+            
+            // Update the main view.
+            let view = self.mainViewController.view as! MainView
+            view.backgroundColor = self.backgroundColor
+        }
+    }
+    
+    @IBOutlet weak var backgroundColorWell: NSColorWell!
+    
+    var cubeletLevelOfDetail: Int {
+        didSet {
+            // Update the user defaults.
+            UserDefaults.standard.set(cubeletLevelOfDetail, forKey: "cubeletLevelOfDetail")
+            
+            // Update the main view.
+            let view = self.mainViewController.view as! MainView
+            view.rubiksCubeRenderer.cubeletLevelOfDetail = self.cubeletLevelOfDetail
+            view.needsDisplay = true
+        }
+    }
+    
+    @IBOutlet weak var cubeletLevelOfDetailSlider: NSSlider!
+    
+    var stickerLevelOfDetail: Int {
+        didSet {
+            // Update the user defaults.
+            UserDefaults.standard.set(stickerLevelOfDetail, forKey: "stickerLevelOfDetail")
+            
+            // Update the main view.
+            let view = self.mainViewController.view as! MainView
+            view.rubiksCubeRenderer.stickerLevelOfDetail = self.stickerLevelOfDetail
+            view.needsDisplay = true
+        }
+    }
+    
+    @IBOutlet weak var stickerLevelOfDetailSlider: NSSlider!
     
     var renderAsOutlines: Bool {
         didSet {
@@ -24,23 +64,13 @@ class PreferencesController: NSObject {
         }
     }
     
-    // Computed properties
+    @IBOutlet weak var renderAsOutlinesCheckbox: NSButton!
     
     var polygonMode: GLenum {
         renderAsOutlines ? GL.PolygonMode.line : GL.PolygonMode.fill
     }
     
-    // UI elements
-    
-    @IBOutlet weak var mainViewController: MainViewController!
-    
-    @IBOutlet weak var backgroundColorWell: NSColorWell!
-    @IBOutlet weak var defaultBackgroundColorButton: NSButton!
-    @IBOutlet weak var cubeletLevelOfDetailSlider: NSSlider!
-    @IBOutlet weak var stickerLevelOfDetailSlider: NSSlider!
-    @IBOutlet weak var renderAsOutlinesCheckbox: NSButton!
-    
-    // Initialization
+    // MARK:- Initialization
     
     override init() {
         // Provide default values for the user preferences.
@@ -59,17 +89,25 @@ class PreferencesController: NSObject {
         // Load the user preferences.
         
         let backgroundColorAsDictionary = UserDefaults.standard.dictionary(forKey: "backgroundColor")!
-        self.backgroundColor = Color(red: (backgroundColorAsDictionary["red"] ?? 0.0) as! Double,
-                                    green: (backgroundColorAsDictionary["green"] ?? 0.0) as! Double,
-                                    blue: (backgroundColorAsDictionary["blue"] ?? 0.0) as! Double)
-        self.cubeletLevelOfDetail = UserDefaults.standard.integer(forKey: "cubeletLevelOfDetail")
-        self.stickerLevelOfDetail = UserDefaults.standard.integer(forKey: "stickerLevelOfDetail")
-        self.renderAsOutlines = UserDefaults.standard.bool(forKey: "renderAsOutlines")
+        backgroundColor = Color(red: (backgroundColorAsDictionary["red"] ?? 0.0) as! Double,
+                                green: (backgroundColorAsDictionary["green"] ?? 0.0) as! Double,
+                                blue: (backgroundColorAsDictionary["blue"] ?? 0.0) as! Double)
+        cubeletLevelOfDetail = UserDefaults.standard.integer(forKey: "cubeletLevelOfDetail")
+        stickerLevelOfDetail = UserDefaults.standard.integer(forKey: "stickerLevelOfDetail")
+        renderAsOutlines = UserDefaults.standard.bool(forKey: "renderAsOutlines")
         
         super.init()
     }
     
     override func awakeFromNib() {
+        // Update the main view.
+        
+        let view = mainViewController.view as! MainView
+        view.polygonMode = self.polygonMode
+        view.backgroundColor = self.backgroundColor
+        view.rubiksCubeRenderer.cubeletLevelOfDetail = self.cubeletLevelOfDetail
+        view.rubiksCubeRenderer.stickerLevelOfDetail = self.stickerLevelOfDetail
+        
         // Update the preferences window.
         
         backgroundColorWell.color = NSColor(red: CGFloat(backgroundColor.red),
@@ -81,71 +119,35 @@ class PreferencesController: NSObject {
         renderAsOutlinesCheckbox.state = renderAsOutlines ? .on : .off
     }
     
-    // User actions
+    // MARK:- User actions
     
     @IBAction func setBackgroundColor(_ sender: Any) {
-        // Get the new color from the color well.
-        let newColorAsNSColor = self.backgroundColorWell.color
-        let newColor = Color(red: Double(newColorAsNSColor.redComponent),
-                             green: Double(newColorAsNSColor.greenComponent),
-                             blue: Double(newColorAsNSColor.blueComponent))
-        
-        // Update the user defaults.
-        let backgroundColorAsDictionary = ["red": newColor.red, "green": newColor.green, "blue": newColor.blue]
-        UserDefaults.standard.set(backgroundColorAsDictionary, forKey: "backgroundColor")
-        
-        // Update the main view.
-        let view = self.mainViewController.view as! MainView
-        view.backgroundColor = newColor
+        let backgroundColorAsNSColor = backgroundColorWell.color
+        backgroundColor = Color(red: Double(backgroundColorAsNSColor.redComponent),
+                                green: Double(backgroundColorAsNSColor.greenComponent),
+                                blue: Double(backgroundColorAsNSColor.blueComponent))
     }
     
     @IBAction func resetBackgroundColorToDefault(_ sender: Any) {
-        // Get the default background color.
-        let newColor = MainView.defaultBackgroundColor
-        
-        // Update the user defaults.
-        let backgroundColorAsDictionary = ["red": newColor.red, "green": newColor.green, "blue": newColor.blue]
-        UserDefaults.standard.set(backgroundColorAsDictionary, forKey: "backgroundColor")
-        
-        // Update the main view.
-        let view = self.mainViewController.view as! MainView
-        view.backgroundColor = newColor
+        backgroundColor = MainView.defaultBackgroundColor
         
         // Update the preferences window.
-        let newColorAsNSColor = NSColor(red: CGFloat(newColor.red),
-                                        green: CGFloat(newColor.green),
-                                        blue: CGFloat(newColor.blue),
-                                        alpha: 1)
-        self.backgroundColorWell.color = newColorAsNSColor
+        let backgroundColorAsNSColor = NSColor(red: CGFloat(backgroundColor.red),
+                                               green: CGFloat(backgroundColor.green),
+                                               blue: CGFloat(backgroundColor.blue),
+                                               alpha: 1)
+        backgroundColorWell.color = backgroundColorAsNSColor
     }
     
     @IBAction func setCubeletLevelOfDetail(_ sender: Any) {
-        // Get the new level of detail from the slider.
-        let newLevelOfDetail = self.cubeletLevelOfDetailSlider.integerValue
-        
-        // Update the user defaults.
-        UserDefaults.standard.set(newLevelOfDetail, forKey: "cubeletLevelOfDetail")
-        
-        // Update the main view.
-        let view = self.mainViewController.view as! MainView
-        view.rubiksCubeRenderer.cubeletLevelOfDetail = newLevelOfDetail
-        view.needsDisplay = true
+        cubeletLevelOfDetail = cubeletLevelOfDetailSlider.integerValue
     }
     
     @IBAction func setStickerLevelOfDetail(_ sender: Any) {
-        // Get the new level of detail from the slider.
-        let newLevelOfDetail = self.stickerLevelOfDetailSlider.integerValue
-        
-        // Update the user defaults.
-        UserDefaults.standard.set(newLevelOfDetail, forKey: "stickerLevelOfDetail")
-        
-        // Update the view.
-        let view = self.mainViewController.view as! MainView
-        view.rubiksCubeRenderer.stickerLevelOfDetail = newLevelOfDetail
-        view.needsDisplay = true
+        stickerLevelOfDetail = stickerLevelOfDetailSlider.integerValue
     }
     
-    @IBAction func setRenderAsOutlines(_ sender: Any) {
+    @IBAction func setPolygonMode(_ sender: Any) {
         renderAsOutlines = (renderAsOutlinesCheckbox.state == .on)
     }
 }

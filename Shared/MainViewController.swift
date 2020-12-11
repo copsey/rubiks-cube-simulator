@@ -13,15 +13,7 @@ class MainViewController: NSViewController {
     override func awakeFromNib() {
         let view = self.view as! MainView
         
-        // Update the main view.
-        
-        view.polygonMode = preferencesController.polygonMode
-        view.backgroundColor = preferencesController.backgroundColor
-        view.rubiksCubeRenderer.cubeletLevelOfDetail = preferencesController.cubeletLevelOfDetail
-        view.rubiksCubeRenderer.stickerLevelOfDetail = preferencesController.stickerLevelOfDetail
-        
         // Bring the main window to the front.
-        
         view.window!.makeKeyAndOrderFront(nil)
     }
     
