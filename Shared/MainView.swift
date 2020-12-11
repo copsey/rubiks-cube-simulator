@@ -11,6 +11,12 @@ class MainView: NSOpenGLView {
     var rubiksCube: RubiksCube { rubiksCubeRenderer.rubiksCube }
     var rubiksCubeRenderer: RubiksCubeRenderer
     
+    var polygonMode = GL.PolygonMode.fill {
+        didSet {
+            self.needsDisplay = true
+        }
+    }
+    
     var backgroundColor = defaultBackgroundColor {
         didSet {
             self.needsDisplay = true
@@ -55,7 +61,6 @@ class MainView: NSOpenGLView {
 //        glEnable(GLenum(GL_MULTISAMPLE))
 //        glEnable(GLenum(GL_LIGHTING))
 //        glEnable(GLenum(GL_LIGHT0))
-//        glPolygonMode(GLenum(GL_FRONT_AND_BACK), GLenum(GL_LINE))
     }
     
     func replaceRubiksCube(with newRubiksCube: RubiksCube) {
@@ -101,6 +106,9 @@ class MainView: NSOpenGLView {
     
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
+        
+        // Set the polygon mode.
+        GL.setPolygonMode(polygonMode)
         
         // Set the scene's viewport and perspective.
         updateViewport()

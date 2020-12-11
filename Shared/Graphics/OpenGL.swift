@@ -13,6 +13,20 @@ struct GL {
     typealias Vector = Vector3<GLdouble>
     typealias Vertex = Vector3<GLdouble>
     
+    enum PolygonMode {
+        static var point: GLenum {
+            GLenum(GL_POINT)
+        }
+        
+        static var line: GLenum {
+            GLenum(GL_LINE)
+        }
+        
+        static var fill: GLenum {
+            GLenum(GL_FILL)
+        }
+    }
+    
     static var clearColor: Color {
         get {
             var buffer = Array<GLdouble>(repeating: 0, count: 4)
@@ -189,5 +203,9 @@ struct GL {
         glReadPixels(x, y, 1, 1, GLenum(GL_DEPTH_COMPONENT), GLenum(GL_FLOAT), &depth)
         
         return depth
+    }
+    
+    static func setPolygonMode(_ newValue: GLenum) {
+        glPolygonMode(GLenum(GL_FRONT_AND_BACK), newValue)
     }
 }

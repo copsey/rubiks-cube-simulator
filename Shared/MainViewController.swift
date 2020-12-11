@@ -15,6 +15,7 @@ class MainViewController: NSViewController {
         
         // Update the main view.
         
+        view.polygonMode = preferencesController.polygonMode
         view.backgroundColor = preferencesController.backgroundColor
         view.rubiksCubeRenderer.cubeletLevelOfDetail = preferencesController.cubeletLevelOfDetail
         view.rubiksCubeRenderer.stickerLevelOfDetail = preferencesController.stickerLevelOfDetail

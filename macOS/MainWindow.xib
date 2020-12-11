@@ -368,6 +368,7 @@
                 <outlet property="cubeletLevelOfDetailSlider" destination="KMK-e0-gpo" id="r5z-6K-TGM"/>
                 <outlet property="defaultBackgroundColorButton" destination="WHs-hw-QEu" id="jXB-Oa-dXP"/>
                 <outlet property="mainViewController" destination="THS-xe-EfH" id="hnk-3r-KRV"/>
+                <outlet property="renderAsOutlinesCheckbox" destination="wrM-W0-VHs" id="JxM-rg-0ms"/>
                 <outlet property="stickerLevelOfDetailSlider" destination="ZJu-cd-KIN" id="whC-Gy-XoN"/>
             </connections>
         </customObject>
@@ -468,14 +469,14 @@
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="TfV-Wd-5fG">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES"/>
-            <rect key="contentRect" x="131" y="409" width="342" height="281"/>
+            <rect key="contentRect" x="131" y="409" width="343" height="351"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <view key="contentView" id="Lkh-1L-Kaz">
-                <rect key="frame" x="0.0" y="0.0" width="342" height="281"/>
+                <rect key="frame" x="0.0" y="0.0" width="343" height="351"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LUX-uy-cFw">
-                        <rect key="frame" x="17" y="163" width="87" height="17"/>
+                        <rect key="frame" x="17" y="233" width="87" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Vertex Level" id="Tdm-6v-Avh">
                             <font key="font" metaFont="systemBold"/>
@@ -484,7 +485,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vib-zq-CBB">
-                        <rect key="frame" x="29" y="127" width="288" height="28"/>
+                        <rect key="frame" x="29" y="197" width="288" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="A higher vertex level makes edges look smoother, but takes longer to render." id="e1N-ss-oMb">
                             <font key="font" metaFont="menu" size="11"/>
@@ -493,7 +494,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wz7-I8-VPg">
-                        <rect key="frame" x="29" y="98" width="36" height="17"/>
+                        <rect key="frame" x="29" y="168" width="36" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Lower" id="Jou-Va-9oG">
                             <font key="font" metaFont="menu" size="11"/>
@@ -502,7 +503,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="muo-Pg-Y4c">
-                        <rect key="frame" x="204" y="98" width="39" height="17"/>
+                        <rect key="frame" x="204" y="168" width="39" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Higher" id="urU-uE-3ai">
                             <font key="font" metaFont="menu" size="11"/>
@@ -511,7 +512,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5gi-GI-6bX">
-                        <rect key="frame" x="266" y="24" width="54" height="17"/>
+                        <rect key="frame" x="266" y="94" width="54" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Stickers" id="Kxw-Au-jsW">
                             <font key="font" metaFont="system"/>
@@ -520,7 +521,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tqB-Qd-WiX">
-                        <rect key="frame" x="266" y="70" width="59" height="17"/>
+                        <rect key="frame" x="266" y="140" width="59" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Cubelets" id="c7z-N3-SWc">
                             <font key="font" metaFont="system"/>
@@ -529,7 +530,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z3Q-Yh-cWg">
-                        <rect key="frame" x="17" y="244" width="55" height="17"/>
+                        <rect key="frame" x="17" y="314" width="55" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Colours" id="wcp-90-zAr">
                             <font key="font" metaFont="systemBold"/>
@@ -538,7 +539,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kLl-Vt-Ica">
-                        <rect key="frame" x="29" y="216" width="77" height="17"/>
+                        <rect key="frame" x="29" y="286" width="77" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Background" id="QNT-uO-toQ">
                             <font key="font" metaFont="system"/>
@@ -547,7 +548,7 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WHs-hw-QEu">
-                        <rect key="frame" x="244" y="207" width="84" height="32"/>
+                        <rect key="frame" x="244" y="277" width="84" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Default" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Aho-T5-jah">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -558,7 +559,7 @@
                         </connections>
                     </button>
                     <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sg1-pf-Bqd">
-                        <rect key="frame" x="198" y="213" width="44" height="23"/>
+                        <rect key="frame" x="198" y="283" width="44" height="23"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
@@ -566,7 +567,7 @@
                         </connections>
                     </colorWell>
                     <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KMK-e0-gpo">
-                        <rect key="frame" x="30" y="63" width="212" height="28"/>
+                        <rect key="frame" x="30" y="133" width="212" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="7" doubleValue="3" tickMarkPosition="above" numberOfTickMarks="8" allowsTickMarkValuesOnly="YES" sliderType="linear" id="PDT-rp-G5E"/>
                         <connections>
@@ -574,16 +575,36 @@
                         </connections>
                     </slider>
                     <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZJu-cd-KIN">
-                        <rect key="frame" x="30" y="17" width="212" height="28"/>
+                        <rect key="frame" x="30" y="87" width="212" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="7" doubleValue="3" tickMarkPosition="above" numberOfTickMarks="8" allowsTickMarkValuesOnly="YES" sliderType="linear" id="tbG-JU-IPy"/>
                         <connections>
                             <action selector="setStickerLevelOfDetail:" target="402-Gm-Nnj" id="0zk-jz-e2H"/>
                         </connections>
                     </slider>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wrM-W0-VHs">
+                        <rect key="frame" x="30" y="19" width="234" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Only draw the outlines of the cube" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6wT-PP-vvk">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="setRenderAsOutlines:" target="402-Gm-Nnj" id="YJD-Fc-bM1"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6sD-i3-hns">
+                        <rect key="frame" x="17" y="46" width="87" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Debug" id="29k-y8-Z4f">
+                            <font key="font" metaFont="systemBold"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="-547" y="128.5"/>
+            <point key="canvasLocation" x="-546.5" y="163.5"/>
         </window>
     </objects>
 </document>

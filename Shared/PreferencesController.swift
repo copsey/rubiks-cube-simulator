@@ -13,6 +13,23 @@ class PreferencesController: NSObject {
     var cubeletLevelOfDetail: Int
     var stickerLevelOfDetail: Int
     
+    var renderAsOutlines: Bool {
+        didSet {
+            // Update the user defaults.
+            UserDefaults.standard.set(renderAsOutlines, forKey: "renderAsOutlines")
+            
+            // Update the main view.
+            let view = mainViewController.view as! MainView
+            view.polygonMode = self.polygonMode
+        }
+    }
+    
+    // Computed properties
+    
+    var polygonMode: GLenum {
+        renderAsOutlines ? GL.PolygonMode.line : GL.PolygonMode.fill
+    }
+    
     // UI elements
     
     @IBOutlet weak var mainViewController: MainViewController!
@@ -21,6 +38,7 @@ class PreferencesController: NSObject {
     @IBOutlet weak var defaultBackgroundColorButton: NSButton!
     @IBOutlet weak var cubeletLevelOfDetailSlider: NSSlider!
     @IBOutlet weak var stickerLevelOfDetailSlider: NSSlider!
+    @IBOutlet weak var renderAsOutlinesCheckbox: NSButton!
     
     // Initialization
     
@@ -32,7 +50,8 @@ class PreferencesController: NSObject {
         let userDefaults: [String: Any] = [
             "backgroundColor": ["red": bgColor.red, "green": bgColor.green, "blue": bgColor.blue],
             "cubeletLevelOfDetail": 4,
-            "stickerLevelOfDetail": 4
+            "stickerLevelOfDetail": 4,
+            "renderAsOutlines": false
         ]
         
         UserDefaults.standard.register(defaults: userDefaults)
@@ -45,6 +64,7 @@ class PreferencesController: NSObject {
                                     blue: (backgroundColorAsDictionary["blue"] ?? 0.0) as! Double)
         self.cubeletLevelOfDetail = UserDefaults.standard.integer(forKey: "cubeletLevelOfDetail")
         self.stickerLevelOfDetail = UserDefaults.standard.integer(forKey: "stickerLevelOfDetail")
+        self.renderAsOutlines = UserDefaults.standard.bool(forKey: "renderAsOutlines")
         
         super.init()
     }
@@ -52,12 +72,13 @@ class PreferencesController: NSObject {
     override func awakeFromNib() {
         // Update the preferences window.
         
-        self.backgroundColorWell.color = NSColor(red: CGFloat(self.backgroundColor.red),
-                                                 green: CGFloat(self.backgroundColor.green),
-                                                 blue: CGFloat(self.backgroundColor.blue),
-                                                 alpha: 1)
-        self.cubeletLevelOfDetailSlider.integerValue = self.cubeletLevelOfDetail
-        self.stickerLevelOfDetailSlider.integerValue = self.stickerLevelOfDetail
+        backgroundColorWell.color = NSColor(red: CGFloat(backgroundColor.red),
+                                            green: CGFloat(backgroundColor.green),
+                                            blue: CGFloat(backgroundColor.blue),
+                                            alpha: 1)
+        cubeletLevelOfDetailSlider.integerValue = cubeletLevelOfDetail
+        stickerLevelOfDetailSlider.integerValue = stickerLevelOfDetail
+        renderAsOutlinesCheckbox.state = renderAsOutlines ? .on : .off
     }
     
     // User actions
@@ -122,5 +143,9 @@ class PreferencesController: NSObject {
         let view = self.mainViewController.view as! MainView
         view.rubiksCubeRenderer.stickerLevelOfDetail = newLevelOfDetail
         view.needsDisplay = true
+    }
+    
+    @IBAction func setRenderAsOutlines(_ sender: Any) {
+        renderAsOutlines = (renderAsOutlinesCheckbox.state == .on)
     }
 }
