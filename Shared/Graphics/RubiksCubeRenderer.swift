@@ -47,6 +47,7 @@ class RubiksCubeRenderer {
     private var cubeletFaceVertexData: [Vertex] = []
     private var cubeletEdgeVertexData: [Vertex] = []
     private var cubeletCornerVertexData: [Vertex] = []
+    private var cubeletCornerVertexDrawingOrder: [(Int, Int, Int)] = []
     private var stickerVertexData: [Vertex] = []
     private var stickerVertexDrawingOrder: [(Int, Int, Int)] = []
     
@@ -85,33 +86,30 @@ class RubiksCubeRenderer {
         
         // Case #1: Use rounded corners.
         if cubeletLevelOfDetail > 0 {
+            var newCubeletFaceVertexData: [Vertex] = []
+            var newCubeletEdgeVertexData: [Vertex] = []
+            var newCubeletCornerVertexData: [Vertex] = []
+            var newCubeletCornerVertexDrawingOrder: [(Int, Int, Int)] = []
+            
             // Compute the face vertices.
             
-            cubeletFaceVertexData = [
-                length * Vertex(0, 0, 0) + radius * Vertex( 1,  1, 0),
-                length * Vertex(1, 0, 0) + radius * Vertex(-1,  1, 0),
-                length * Vertex(1, 1, 0) + radius * Vertex(-1, -1, 0),
-                length * Vertex(0, 1, 0) + radius * Vertex( 1, -1, 0)
-            ]
+            newCubeletFaceVertexData.append(length * Vertex(0, 0, 0) + radius * Vertex( 1,  1, 0))
+            newCubeletFaceVertexData.append(length * Vertex(1, 0, 0) + radius * Vertex(-1,  1, 0))
+            newCubeletFaceVertexData.append(length * Vertex(1, 1, 0) + radius * Vertex(-1, -1, 0))
+            newCubeletFaceVertexData.append(length * Vertex(0, 1, 0) + radius * Vertex( 1, -1, 0))
 
             // Compute the edge vertices.
-            
-            cubeletEdgeVertexData.removeAll()
-            cubeletEdgeVertexData.reserveCapacity(2 * (cubeletLevelOfDetail + 1))
             
             for row in 0...cubeletLevelOfDetail {
                 let theta = 0.5 * .pi * Scalar(row) / Scalar(cubeletLevelOfDetail)
                 let sn = sin(theta)
                 let cs = cos(theta)
 
-                cubeletEdgeVertexData.append(length * Vertex(0, 0, 0) + radius * Vertex( 1, 1-sn, 1-cs))
-                cubeletEdgeVertexData.append(length * Vertex(1, 0, 0) + radius * Vertex(-1, 1-sn, 1-cs))
+                newCubeletEdgeVertexData.append(length * Vertex(0, 0, 0) + radius * Vertex( 1, 1-sn, 1-cs))
+                newCubeletEdgeVertexData.append(length * Vertex(1, 0, 0) + radius * Vertex(-1, 1-sn, 1-cs))
             }
 
             // Compute the corner vertices.
-            
-            cubeletCornerVertexData.removeAll()
-            cubeletCornerVertexData.reserveCapacity((cubeletLevelOfDetail + 1) * (cubeletLevelOfDetail + 2) / 2)
             
             for row in 0...cubeletLevelOfDetail {
                 for column in 0...row {
@@ -119,9 +117,44 @@ class RubiksCubeRenderer {
                     let t = (row == 0) ? 0 : (Scalar(column) / Scalar(row))
                     
                     let pointOnSphere = Vertex(s * (1-t), s * t, 1-s).direction
-                    cubeletCornerVertexData.append(radius * (Vertex(1, 1, 1) - pointOnSphere))
+                    newCubeletCornerVertexData.append(radius * (Vertex(1, 1, 1) - pointOnSphere))
+                    
+                    // Append the triangle pointing "up", if it exists:
+                    //
+                    //    /\
+                    //   /  \
+                    //  /    \
+                    //  ------
+                    //
+                    if row < cubeletLevelOfDetail {
+                        let bufferIndex1 = row * (row + 1) / 2 + column
+                        let bufferIndex2 = (row + 1) * (row + 2) / 2 + column
+                        let bufferIndex3 = (row + 1) * (row + 2) / 2 + column + 1
+                        newCubeletCornerVertexDrawingOrder.append((bufferIndex1, bufferIndex2, bufferIndex3))
+                    }
+                    
+                    // Append the triangle pointing "down", if it exists:
+                    //
+                    //  ------
+                    //  \    /
+                    //   \  /
+                    //    \/
+                    //
+                    if row < cubeletLevelOfDetail && column < row {
+                        let bufferIndex1 = row * (row + 1) / 2 + column
+                        let bufferIndex2 = (row + 1) * (row + 2) / 2 + column + 1
+                        let bufferIndex3 = row * (row + 1) / 2 + column + 1
+                        newCubeletCornerVertexDrawingOrder.append((bufferIndex1, bufferIndex2, bufferIndex3))
+                    }
                 }
             }
+            
+            // Replace the buffers.
+            
+            cubeletFaceVertexData = newCubeletFaceVertexData
+            cubeletEdgeVertexData = newCubeletEdgeVertexData
+            cubeletCornerVertexData = newCubeletCornerVertexData
+            cubeletCornerVertexDrawingOrder = newCubeletCornerVertexDrawingOrder
         }
 
         // Case #2: Use sharp corners.
@@ -132,15 +165,9 @@ class RubiksCubeRenderer {
                 length * Vertex(1, 1, 0),
                 length * Vertex(0, 1, 0)
             ]
-
-            cubeletEdgeVertexData = [
-                length * Vertex(0, 0, 0),
-                length * Vertex(1, 0, 0)
-            ]
-
-            cubeletCornerVertexData = [
-                length * Vertex(0, 0, 0)
-            ]
+            cubeletEdgeVertexData = []
+            cubeletCornerVertexData = []
+            cubeletCornerVertexDrawingOrder = []
         }
     }
 
@@ -526,19 +553,16 @@ class RubiksCubeRenderer {
 
     private func renderCubeletCorner() {
         GL.renderColor = cubeColor
-
-        for row in 0..<cubeletLevelOfDetail {
-            GL.beginTriangleStrip()
-
-            for col in 0...row {
-                GL.addVertex(cubeletCornerVertexData[(row + 1) * (row + 2) / 2 + col])
-                GL.addVertex(cubeletCornerVertexData[row * (row + 1) / 2 + col])
-            }
-            
-            GL.addVertex(cubeletCornerVertexData[(row + 1) * (row + 4) / 2])
-
-            GL.endShape()
+        
+        GL.beginTriangles()
+        
+        for (bufferIndex1, bufferIndex2, bufferIndex3) in cubeletCornerVertexDrawingOrder {
+            GL.addVertex(cubeletCornerVertexData[bufferIndex1])
+            GL.addVertex(cubeletCornerVertexData[bufferIndex2])
+            GL.addVertex(cubeletCornerVertexData[bufferIndex3])
         }
+        
+        GL.endShape()
     }
 
     private func renderSticker(color: Color) {
