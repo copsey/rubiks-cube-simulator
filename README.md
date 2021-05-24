@@ -13,4 +13,6 @@ _Note:_ Due to using Swift and Xcode, it only works on Macs. Also make sure that
 
 ## Demo
 
-*TBD*
+_(Click the image to see it in action.)_
+
+[![Demo Video](http://img.youtube.com/vi/1WhQ0WeIIX8/0.jpg)](https://youtu.be/1WhQ0WeIIX8 "Rubik's Cube Simulator Demo")
