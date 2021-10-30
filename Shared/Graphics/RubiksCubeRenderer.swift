@@ -46,10 +46,8 @@ class RubiksCubeRenderer {
     
     private var cubeletFaceVertexData: [Vertex] = []
     private var cubeletEdgeVertexData: [Vertex] = []
-    private var cubeletCornerVertexData: [Vertex] = []
-    private var cubeletCornerVertexDrawingOrder: [(Int, Int, Int)] = []
-    private var stickerVertexData: [Vertex] = []
-    private var stickerVertexDrawingOrder: [(Int, Int, Int)] = []
+	private var cubeletCornerMesh = TriangleMesh()
+	private var stickerMesh = TriangleMesh()
     
     /// Layer of the cube being rotated, if any, along with the angle measured in radians.
     var rotatedLayerAndAngle: (layer: RubiksCube.Layer, angle: Scalar)? = nil
@@ -88,8 +86,7 @@ class RubiksCubeRenderer {
         if cubeletLevelOfDetail > 0 {
             var newCubeletFaceVertexData: [Vertex] = []
             var newCubeletEdgeVertexData: [Vertex] = []
-            var newCubeletCornerVertexData: [Vertex] = []
-            var newCubeletCornerVertexDrawingOrder: [(Int, Int, Int)] = []
+			var newCubeletCornerMesh = TriangleMesh()
             
             // Compute the face vertices.
             
@@ -117,7 +114,7 @@ class RubiksCubeRenderer {
                     let t = (row == 0) ? 0 : (Scalar(column) / Scalar(row))
                     
                     let pointOnSphere = Vertex(s * (1-t), s * t, 1-s).direction
-                    newCubeletCornerVertexData.append(radius * (Vertex(1, 1, 1) - pointOnSphere))
+					newCubeletCornerMesh.vertexes.append(radius * (Vertex(1, 1, 1) - pointOnSphere))
                     
                     // Append the triangle pointing "up", if it exists:
                     //
@@ -130,7 +127,7 @@ class RubiksCubeRenderer {
                         let bufferIndex1 = row * (row + 1) / 2 + column
                         let bufferIndex2 = (row + 1) * (row + 2) / 2 + column
                         let bufferIndex3 = (row + 1) * (row + 2) / 2 + column + 1
-                        newCubeletCornerVertexDrawingOrder.append((bufferIndex1, bufferIndex2, bufferIndex3))
+						newCubeletCornerMesh.drawingOrder.append((bufferIndex1, bufferIndex2, bufferIndex3))
                     }
                     
                     // Append the triangle pointing "down", if it exists:
@@ -144,7 +141,7 @@ class RubiksCubeRenderer {
                         let bufferIndex1 = row * (row + 1) / 2 + column
                         let bufferIndex2 = (row + 1) * (row + 2) / 2 + column + 1
                         let bufferIndex3 = row * (row + 1) / 2 + column + 1
-                        newCubeletCornerVertexDrawingOrder.append((bufferIndex1, bufferIndex2, bufferIndex3))
+						newCubeletCornerMesh.drawingOrder.append((bufferIndex1, bufferIndex2, bufferIndex3))
                     }
                 }
             }
@@ -153,8 +150,7 @@ class RubiksCubeRenderer {
             
             cubeletFaceVertexData = newCubeletFaceVertexData
             cubeletEdgeVertexData = newCubeletEdgeVertexData
-            cubeletCornerVertexData = newCubeletCornerVertexData
-            cubeletCornerVertexDrawingOrder = newCubeletCornerVertexDrawingOrder
+			cubeletCornerMesh = newCubeletCornerMesh
         }
 
         // Case #2: Use sharp corners.
@@ -166,8 +162,7 @@ class RubiksCubeRenderer {
                 length * Vertex(0, 1, 0)
             ]
             cubeletEdgeVertexData = []
-            cubeletCornerVertexData = []
-            cubeletCornerVertexDrawingOrder = []
+			cubeletCornerMesh = TriangleMesh()
         }
     }
 
@@ -181,11 +176,11 @@ class RubiksCubeRenderer {
 
         // Case #1: Use rounded corners.
         if stickerLevelOfDetail > 0 {
-            stickerVertexData.removeAll()
-            stickerVertexData.reserveCapacity(4 * (stickerLevelOfDetail + 1) + 1)
+			stickerMesh.vertexes.removeAll()
+			stickerMesh.vertexes.reserveCapacity(4 * (stickerLevelOfDetail + 1) + 1)
             
             // Centre
-            stickerVertexData.append(base + length * Vertex(0.5, 0.5, 0))
+            stickerMesh.vertexes.append(base + length * Vertex(0.5, 0.5, 0))
             
             // Bottom-left corner
             for i in 0...stickerLevelOfDetail {
@@ -193,7 +188,7 @@ class RubiksCubeRenderer {
                 let cs = cos(theta)
                 let sn = sin(theta)
 
-                stickerVertexData.append(base + length * Vertex(0, 0, 0) + radius * Vertex(1-cs, 1-sn, 0))
+                stickerMesh.vertexes.append(base + length * Vertex(0, 0, 0) + radius * Vertex(1-cs, 1-sn, 0))
             }
             
             // Bottom-right corner
@@ -202,7 +197,7 @@ class RubiksCubeRenderer {
                 let cs = cos(theta)
                 let sn = sin(theta)
 
-                stickerVertexData.append(base + length * Vertex(1, 0, 0) + radius * Vertex(sn-1, 1-cs, 0))
+                stickerMesh.vertexes.append(base + length * Vertex(1, 0, 0) + radius * Vertex(sn-1, 1-cs, 0))
             }
             
             // Top-right corner
@@ -211,7 +206,7 @@ class RubiksCubeRenderer {
                 let cs = cos(theta)
                 let sn = sin(theta)
 
-                stickerVertexData.append(base + length * Vertex(1, 1, 0) + radius * Vertex(cs-1, sn-1, 0))
+                stickerMesh.vertexes.append(base + length * Vertex(1, 1, 0) + radius * Vertex(cs-1, sn-1, 0))
             }
             
             // Top-left corner
@@ -220,31 +215,31 @@ class RubiksCubeRenderer {
                 let cs = cos(theta)
                 let sn = sin(theta)
 
-                stickerVertexData.append(base + length * Vertex(0, 1, 0) + radius * Vertex(1-sn, cs-1, 0))
+                stickerMesh.vertexes.append(base + length * Vertex(0, 1, 0) + radius * Vertex(1-sn, cs-1, 0))
             }
             
-            stickerVertexDrawingOrder.removeAll()
-            stickerVertexDrawingOrder.reserveCapacity(4 * (stickerLevelOfDetail + 1))
+            stickerMesh.drawingOrder.removeAll()
+            stickerMesh.drawingOrder.reserveCapacity(4 * (stickerLevelOfDetail + 1))
             
             for i in 0 ... 4 * (stickerLevelOfDetail + 1) {
                 let bufferIndex1 = 0
                 let bufferIndex2 = 1 +       i % (4 * (stickerLevelOfDetail + 1))
                 let bufferIndex3 = 1 + (i + 1) % (4 * (stickerLevelOfDetail + 1))
                 
-                stickerVertexDrawingOrder.append((bufferIndex1, bufferIndex2, bufferIndex3))
+                stickerMesh.drawingOrder.append((bufferIndex1, bufferIndex2, bufferIndex3))
             }
         }
 
         // Case #2: Use sharp corners.
         else {
-            self.stickerVertexData = [
+            self.stickerMesh.vertexes = [
                 base + length * Vertex(0, 0, 0),
                 base + length * Vertex(1, 0, 0),
                 base + length * Vertex(1, 1, 0),
                 base + length * Vertex(0, 1, 0)
             ]
             
-            self.stickerVertexDrawingOrder = [
+            self.stickerMesh.drawingOrder = [
                 (0, 1, 2),
                 (0, 2, 3)
             ]
@@ -553,30 +548,12 @@ class RubiksCubeRenderer {
 
     private func renderCubeletCorner() {
         GL.renderColor = cubeColor
-        
-        GL.beginTriangles()
-        
-        for (bufferIndex1, bufferIndex2, bufferIndex3) in cubeletCornerVertexDrawingOrder {
-            GL.addVertex(cubeletCornerVertexData[bufferIndex1])
-            GL.addVertex(cubeletCornerVertexData[bufferIndex2])
-            GL.addVertex(cubeletCornerVertexData[bufferIndex3])
-        }
-        
-        GL.endShape()
+		cubeletCornerMesh.render()
     }
 
     private func renderSticker(color: Color) {
         GL.renderColor = color
-
-        GL.beginTriangles()
-
-        for (bufferIndex1, bufferIndex2, bufferIndex3) in stickerVertexDrawingOrder {
-            GL.addVertex(stickerVertexData[bufferIndex1])
-            GL.addVertex(stickerVertexData[bufferIndex2])
-            GL.addVertex(stickerVertexData[bufferIndex3])
-        }
-
-        GL.endShape()
+		stickerMesh.render()
     }
     
     private func renderSticker(at position: RubiksCube.Position) {

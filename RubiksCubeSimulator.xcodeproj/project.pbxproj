@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0409041A2563B24C00AC67E1 /* RubiksCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040904192563B24C00AC67E1 /* RubiksCube.swift */; };
 		0409041F2563D3CA00AC67E1 /* LinearAccelerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0409041E2563D3C900AC67E1 /* LinearAccelerator.swift */; };
+		04262DAE272D787C0006F2F7 /* TriangleMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04262DAD272D787C0006F2F7 /* TriangleMesh.swift */; };
 		0438B49025820DF500C5EDF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0438B48F25820DF500C5EDF6 /* AppDelegate.swift */; };
 		047C125B256291B300183C58 /* RubiksCubeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C125A256291B300183C58 /* RubiksCubeRenderer.swift */; };
 		047DA6AB2577BECD00D74389 /* Matrix4x4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047DA6AA2577BECD00D74389 /* Matrix4x4.swift */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		040904192563B24C00AC67E1 /* RubiksCube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubiksCube.swift; sourceTree = "<group>"; };
 		0409041E2563D3C900AC67E1 /* LinearAccelerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearAccelerator.swift; sourceTree = "<group>"; };
+		04262DAD272D787C0006F2F7 /* TriangleMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriangleMesh.swift; sourceTree = "<group>"; };
 		0438B48F25820DF500C5EDF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		047C125A256291B300183C58 /* RubiksCubeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubiksCubeRenderer.swift; sourceTree = "<group>"; };
 		047DA6AA2577BECD00D74389 /* Matrix4x4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix4x4.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 			children = (
 				04872DFF25724A7600EB8782 /* Color.swift */,
 				047E3E56256BB89900CD0E02 /* OpenGL.swift */,
+				04262DAD272D787C0006F2F7 /* TriangleMesh.swift */,
 				047C125A256291B300183C58 /* RubiksCubeRenderer.swift */,
 			);
 			path = Graphics;
@@ -221,6 +224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04262DAE272D787C0006F2F7 /* TriangleMesh.swift in Sources */,
 				047E3E512566768F00CD0E02 /* AxisAngle.swift in Sources */,
 				0409041A2563B24C00AC67E1 /* RubiksCube.swift in Sources */,
 				047E3E4A256550BF00CD0E02 /* Vector3.swift in Sources */,
